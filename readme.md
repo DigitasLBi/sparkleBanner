@@ -1,4 +1,4 @@
-Gulp boilerplate
+sparkleBanner
 ====================
 
 First run:
@@ -12,11 +12,6 @@ Then: ('development' is the default task)
 To generata a dist
 
 	gulp prod
-
-To generate icon files, copy SVG files to:
-
-	app\icons
-
 
 Vendors is placed in:
 

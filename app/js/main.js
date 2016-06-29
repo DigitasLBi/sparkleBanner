@@ -19,17 +19,33 @@ NIBS.main = (function() {
                 //console.log(n);
             },
             onStop: function(n) {
-                //console.log(this.value);
+
+                if (this.value < 0.125) {
+                    console.log(0);
+                } else if (this.value > 0.125 && this.value <= 0.25) {
+                    console.log(0.33);
+                } else if (this.value > 0.25 && this.value <= 0.375) {
+                    console.log(0.33);
+                } else if (this.value > 0.375 && this.value <= 0.50) {
+                    console.log(0.66);
+                } else if (this.value > 0.50 && this.value <= 0.625) {
+                    console.log(0.66);
+                } else if (this.value > 0.625 && this.value <= 0.75) {
+                    console.log(0.66);
+                } else {
+                    console.log(1);
+                }
+
             }
         });
 
-        // var $el = document.getElementById('d1');
-        // tw.tween(10, 600, 0.8, function(data) {
-        //     $el.style.left = data.val + 'px';
-        // }, function() {
-        //     console.log('Complete!!');
+        // tw.x('#d1', {
+        //     from: 10,
+        //     to: 300,
+        //     dur: 0.7
         // });
-        NIBS.logMsg.add();
+
+        //NIBS.logMsg.add();
 
     }
 
