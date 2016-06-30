@@ -3,13 +3,13 @@
     background-color: #fff;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    max-width: 1100px;
+    width: 1100px;
     height: 210px;
     position: relative;
     padding: $padding;
 
     &size600x400 {
-        max-width: 600px;
+        width: 600px;
         height: 400px;
     }
 
@@ -31,7 +31,7 @@
         width: 100%;
         overflow: hidden;
         box-sizing: border-box;
-        height: 40px;
+        height: 26px;
         background-color: $red;
         background-image: linear-gradient( to right, $red, $orange, $yellow, $green, $blue, $purple );
 
@@ -43,13 +43,23 @@
             cursor: w-resize;
             box-sizing: border-box;
             width: 30px;
-            background-color: #B5B5B5;
+            background-color: transparent;;
+
+            .marker-mask {
+                width: 2500px;
+                height: 16px;
+                margin-left: -1235px;
+
+                background-image: url(../images/markerMask.png);
+                background-repeat: no-repeat;
+                background-size: 100%;
+            }
         }
 
         &.vertical {
 
             position: relative;
-            width: 50px;
+            width: 26px;
             overflow: hidden;
             box-sizing: border-box;
 

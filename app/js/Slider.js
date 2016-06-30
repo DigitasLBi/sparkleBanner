@@ -59,7 +59,7 @@ MOS.Slider.prototype.setup = function() {
         cssV,
         style;
 
-    that.$target.innerHTML = '<div class="slider-handle"></div>';
+    that.$target.innerHTML = '<div class="slider-handle"><div class="marker-mask"></div></div>';
     that.$target.classList.add('slider-wrapper');
     that.$handle = MOS.Slider.get.$1(that.data.selector + ' .slider-handle');
 
