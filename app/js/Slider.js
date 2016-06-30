@@ -14,6 +14,7 @@ MOS.Slider = function(data) {
     that.data = data;
     that.direction = that.data.direction || 'h';
     that.onChange = that.data.onChange || function() {};
+    that.onStop = that.data.onStop || function() {};
     that.width = that.data.width || 'h';
     that.id = 'slider' + MOS.Slider.getId();
     that.touch = MOS.Slider.isTouchDevice();
@@ -29,6 +30,7 @@ MOS.Slider = function(data) {
     };
     that.handleSize = null;
     that.mousePressed = false;
+    that.lastEndTime = new Date().getTime();
 
     if (that.touch) {
         that.pointer = {
@@ -63,33 +65,25 @@ MOS.Slider.prototype.setup = function() {
     that.$target.classList.add('slider-wrapper');
     that.$handle = MOS.Slider.get.$1(that.data.selector + ' .slider-handle');
 
-    if (that.direction === 'h') {
-        that.size = that.$target.offsetWidth;
-        that.handleSize = that.$handle.offsetWidth;
-    } else {
-        that.size = that.$target.offsetHeight;
-        that.handleSize = that.$handle.offsetHeight;
-    }
+    that.$handle.addEventListener(that.pointer.down, function(e) {
 
-    MOS.Slider.prototype.updatePointerPosition = function(e) {
+        that.updatePointerPosition(e);
+        that.$handle.startY = parseInt(that.$handle.style.bottom || 0);
+        that.$handle.startX = parseInt(that.$handle.style.left || 0);
+        that.pointerStartPos.x = parseInt(that.pointer.x);
+        that.pointerStartPos.y = parseInt(that.pointer.y);
 
-        var that = this;
-        if (e.touches) {
-            that.pointer.x = e.touches[0].pageX;
-            that.pointer.y = e.touches[0].pageY;
-        } else {
-            that.pointer.x = e.clientX;
-            that.pointer.y = e.clientY;
-        }
+        that.mousePressed = true;
+        that.$body.addEventListener(that.pointer.move, that.onMouseMove);
 
-    };
+    });
 
-    MOS.Slider.prototype.getValue = function() {
+    that.resize();
 
-        var that = this;
-        return that.value;
+    that.$body.addEventListener(that.pointer.up, that.dragEnded);
+    window.addEventListener('mouseup', that.dragEnded);
 
-    };
+    MOS.Slider.all[that.id] = that;
 
     MOS.Slider.prototype.onMouseMove = function(e) {
 
@@ -122,48 +116,78 @@ MOS.Slider.prototype.setup = function() {
 
     };
 
-    MOS.Slider.prototype.setValue = function(n) {
+};
 
-        var that = this,
-            b;
+MOS.Slider.prototype.updatePointerPosition = function(e) {
 
+    var that = this;
+    if (e.touches) {
+        that.pointer.x = e.touches[0].pageX;
+        that.pointer.y = e.touches[0].pageY;
+    } else {
+        that.pointer.x = e.clientX;
+        that.pointer.y = e.clientY;
+    }
+
+};
+
+MOS.Slider.prototype.getValue = function() {
+
+    var that = this;
+    return that.value;
+
+};
+
+MOS.Slider.prototype.setValue = function(n) {
+
+    var that = this,
+        b;
+
+    if (that.direction === 'h') {
+        b = n * (that.size - that.handleSize);
+        that.$handle.style.left = b + 'px';
+    } else {
         b = n * (that.size - that.handleSize);
         that.$handle.style.bottom = b + 'px';
+    }
 
-    };
-
-    that.$handle.addEventListener(that.pointer.down, function(e) {
-
-        that.updatePointerPosition(e);
-        that.$handle.startY = parseInt(that.$handle.style.bottom || 0);
-        that.$handle.startX = parseInt(that.$handle.style.left || 0);
-        that.pointerStartPos.x = parseInt(that.pointer.x);
-        that.pointerStartPos.y = parseInt(that.pointer.y);
-
-        that.mousePressed = true;
-        that.$body.addEventListener(that.pointer.move, that.onMouseMove);
-
-    });
-
-    that.$body.addEventListener(that.pointer.up, that.dragEnded);
-    window.addEventListener('mouseup', that.dragEnded);
-
-    MOS.Slider.all[that.id] = that;
+    that.value = n;
 
 };
 
 MOS.Slider.prototype.dragEnded = function(e) {
 
-    var that,
-        id;
+    var id;
 
     for (id in MOS.Slider.all) {
         if (MOS.Slider.all.hasOwnProperty(id)) {
-            that = MOS.Slider.all[id];
+            var that = MOS.Slider.all[id];
             that.mousePressed = false;
             that.$body.removeEventListener(that.pointer.move, that.onMouseMove);
+
+            if (new Date().getTime() - that.lastEndTime > 10) {
+                that.onStop(that.value);
+            }
+            that.lastEndTime = new Date().getTime();
         }
     }
+
+};
+
+MOS.Slider.prototype.resize = function() {
+
+    var that = this;
+
+    if (that.direction === 'h') {
+        that.size = that.$target.offsetWidth;
+        that.handleSize = that.$handle.offsetWidth;
+    } else {
+        that.size = that.$target.offsetHeight;
+        that.handleSize = that.$handle.offsetHeight;
+    }
+
+    that.setValue(that.getValue());
+
 
 };
 

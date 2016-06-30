@@ -6,7 +6,6 @@
     width: 1100px;
     height: 210px;
     position: relative;
-    padding: $padding;
 
     &size600x400 {
         width: 600px;
@@ -18,71 +17,96 @@
         font-weight: normal;
     }
 
-    .text-wrapper {
-        text-align: center;
-        font-size: 30px;
-    }
+    .dlbi-sparkle-banner-inner {
 
-    .slider-wrapper {
-
-        position: absolute;
-        bottom: 0;
-        left: 0;
         width: 100%;
-        overflow: hidden;
-        box-sizing: border-box;
-        height: 26px;
-        background-color: $red;
-        background-image: linear-gradient( to right, $red, $orange, $yellow, $green, $blue, $purple );
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
 
-        .slider-handle {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            cursor: w-resize;
-            box-sizing: border-box;
-            width: 30px;
-            background-color: transparent;;
+        .text-wrapper {
 
-            .marker-mask {
-                width: 2500px;
-                height: 16px;
-                margin-left: -1235px;
+            text-align: center;
+            font-size: 30px;
+            margin-top: 25px;
 
-                background-image: url(../images/markerMask.png);
-                background-repeat: no-repeat;
-                background-size: 100%;
+            h2 {
+                display: none;
+                &.visible {
+                    display: block;
+                }
             }
         }
 
-        &.vertical {
+        .the-sparkle-control-wrapper {
 
-            position: relative;
-            width: 26px;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 40px;
+
+            label {
+                width: 25%;
+                display: inline-block;
+                text-align: center;
+            }
+        }
+
+        .slider-wrapper {
+
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             overflow: hidden;
             box-sizing: border-box;
+            height: 26px;
+            background-color: $red;
+            background-image: linear-gradient( to right, $red, $orange, $yellow, $green, $blue, $purple );
 
             .slider-handle {
                 position: absolute;
                 left: 0;
-                bottom: 0;
-                height: 30px;
-                display: inline-block;
-                cursor: n-resize;
+                top: 0;
+                height: 100%;
+                cursor: w-resize;
                 box-sizing: border-box;
-                width: 100%;
-                background-color: #B5B5B5;
+                width: 30px;
+                background-color: transparent;;
+
+                .marker-mask {
+                    width: 2500px;
+                    height: 16px;
+                    margin-left: -1235px;
+
+                    background-image: url(../images/markerMask.png);
+                    background-repeat: no-repeat;
+                    background-size: 100%;
+                }
+            }
+
+            &.vertical {
+
+                position: relative;
+                width: 26px;
+                overflow: hidden;
+                box-sizing: border-box;
+
+                .slider-handle {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    height: 30px;
+                    display: inline-block;
+                    cursor: n-resize;
+                    box-sizing: border-box;
+                    width: 100%;
+                    background-color: #B5B5B5;
+                }
             }
         }
+
     }
 
-    .text-wrapper {
-        h2 {
-            display: none;
-            &.visible {
-                display: block;
-            }
-        }
-    }
 }
