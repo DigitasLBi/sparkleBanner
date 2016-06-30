@@ -21,9 +21,6 @@
 .noSelect {
     cursor: default;
     user-select: none;
-
-
-
     -webkit-user-select: none;
     /* Chrome/Safari/Opera */
     -moz-user-select: none;
@@ -32,6 +29,5 @@
     /* IE/Edge */
     -webkit-touch-callout: none;
     /* iOS Safari */
-
-    pointer-events: none;
+    //pointer-events: none;
 }
