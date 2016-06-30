@@ -14,7 +14,6 @@ MOS.Slider = function(data) {
     that.data = data;
     that.direction = that.data.direction || 'h';
     that.onChange = that.data.onChange || function() {};
-    that.onStop = that.data.onStop || function() {};
     that.width = that.data.width || 'h';
     that.id = 'slider' + MOS.Slider.getId();
     that.touch = MOS.Slider.isTouchDevice();
@@ -30,7 +29,6 @@ MOS.Slider = function(data) {
     };
     that.handleSize = null;
     that.mousePressed = false;
-    that.lastEndTime = new Date().getTime();
 
     if (that.touch) {
         that.pointer = {
@@ -61,59 +59,6 @@ MOS.Slider.prototype.setup = function() {
         cssV,
         style;
 
-    cssH = '		.slider-wrapper {\n' +
-        '			position: relative;\n' +
-        '			width: 100%;\n' +
-        '			overflow: hidden;\n' +
-        '			box-sizing: border-box;\n' +
-        '			height: 50px;\n' +
-        '			background-color: #D6D6D6;\n' +
-        '		}\n\n' +
-
-        '		.slider-handle {\n' +
-        '			position: absolute;\n' +
-        '			left: 0px;\n' +
-        '			top: 0px;\n' +
-        '			height: 100%;\n' +
-        '			cursor: w-resize;\n' +
-        '			box-sizing: border-box;\n' +
-        '			width: 30px;\n' +
-        '			background-color: #B5B5B5;\n' +
-        '		}';
-
-    cssV = '		.slider-wrapper {\n' +
-        '			position: relative;\n' +
-        '			width: 50px;\n' +
-        '			overflow: hidden;\n' +
-        '			box-sizing: border-box;\n' +
-        '			background-color: #D6D6D6;\n' +
-        '		}\n\n' +
-
-        '		.slider-handle {\n' +
-        '			position: absolute;\n' +
-        '			left: 0px;\n' +
-        '			bottom: 0px;\n' +
-        '			height: 30px;\n' +
-        '			display: inline-block;\n' +
-        '			cursor: n-resize;\n' +
-        '			box-sizing: border-box;\n' +
-        '			width: 100%;\n' +
-        '			background-color: #B5B5B5;\n' +
-        '		}';
-
-    style = document.createElement('style');
-    style.type = 'text/css';
-
-    if (that.direction === 'h') {
-        style.innerHTML = cssH;
-    } else {
-        style.innerHTML = cssV;
-        if (getComputedStyle(that.$target).height === '0px') {
-            that.$target.style.height = '300px';
-        }
-    }
-
-    document.getElementsByTagName('head')[0].appendChild(style);
     that.$target.innerHTML = '<div class="slider-handle"></div>';
     that.$target.classList.add('slider-wrapper');
     that.$handle = MOS.Slider.get.$1(that.data.selector + ' .slider-handle');
@@ -209,17 +154,14 @@ MOS.Slider.prototype.setup = function() {
 
 MOS.Slider.prototype.dragEnded = function(e) {
 
-    var id;
+    var that,
+        id;
 
     for (id in MOS.Slider.all) {
         if (MOS.Slider.all.hasOwnProperty(id)) {
-            var that = MOS.Slider.all[id];
+            that = MOS.Slider.all[id];
             that.mousePressed = false;
             that.$body.removeEventListener(that.pointer.move, that.onMouseMove);
-            if (new Date().getTime() - that.lastEndTime > 10) {
-                that.onStop(that.value);
-            }
-            that.lastEndTime = new Date().getTime();
         }
     }
 

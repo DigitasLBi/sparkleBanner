@@ -15,6 +15,7 @@ NIBS.main = (function() {
         var mySlider = new MOS.Slider({
             selector: '.the-sparkle-controls',
             direction: 'h',
+            bg: 'transparent',
             onChange: function (n) {
                 //console.log(n);
             },
