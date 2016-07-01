@@ -158,17 +158,22 @@ MOS.Slider.prototype.setValue = function(n) {
 MOS.Slider.prototype.dragEnded = function(e) {
 
     var id;
+    e.stopPropagation();
 
     for (id in MOS.Slider.all) {
         if (MOS.Slider.all.hasOwnProperty(id)) {
             var that = MOS.Slider.all[id];
-            that.mousePressed = false;
-            that.$body.removeEventListener(that.pointer.move, that.onMouseMove);
 
-            if (new Date().getTime() - that.lastEndTime > 10) {
-                that.onStop(that.value);
+            if (e.target.tagName !== 'A' && that.mousePressed) {
+                that.mousePressed = false;
+                that.$body.removeEventListener(that.pointer.move, that.onMouseMove);
+
+                if (new Date().getTime() - that.lastEndTime > 10) {
+                    that.onStop(that.value);
+                }
+                that.lastEndTime = new Date().getTime();
             }
-            that.lastEndTime = new Date().getTime();
+
         }
     }
 
