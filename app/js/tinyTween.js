@@ -2,90 +2,105 @@
  * TinyTween 1.0
  */
 
-tw = {
-    c: 0,
-    init: function() {
-        tw.init = null;
-        window.requestAnimFrame = (function() {
-            return window.requestAnimationFrame ||
-                window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame ||
-                function(callback) {
-                    window.setTimeout(callback, 1000 / 60);
-                };
-        })();
-        tw.loop();
-    },
-    loop: function() {
+var tw = {};
+tw.c = 0;
+tw.TweenObj = function(data) {
 
-        requestAnimFrame(tw.loop);
+    this.from = data.from;
+    this.id = data.id;
+    this.val = data.from;
+    this.to = data.to;
+    this.prog = 0;
+    this.time = 0;
+    this.inc = data.dur / (60 * data.dur);
+    this.dur = data.dur;
+    this.onStep = data.onStep;
+    this.onComplete = data.onComplete;
 
-        for (var t in tw.all) {
-            if (tw.all.hasOwnProperty(t)) {
+};
+
+tw.TweenObj.prototype.fn = function(scope) {
+
+    scope.prog = scope.time / scope.dur;
+    scope.val = tw.ease.easeInOut(scope.prog * scope.dur, scope.from, scope.prog * (scope.to - scope.from), scope.dur);
+
+    if (scope.time >= scope.dur) {
+        scope.prog = 1;
+        scope.val = scope.to;
+        scope.onComplete();
+        tw.all[scope.id].kill();
+    }
+
+    scope.onStep({
+        prog: scope.prog,
+        val: scope.val
+    });
+    scope.time += scope.inc;
+
+};
+
+tw.TweenObj.prototype.kill = function() {
+
+    var that = this,
+        t = tw.all[that.id];
+
+    if (t.tm) {
+        clearTimeout(t.tm);
+    }
+    delete tw.all[that.id];
+
+};
+
+tw.init = function() {
+    tw.init = null;
+    window.requestAnimFrame = (function() {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            function(callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+    })();
+    tw.loop();
+};
+tw.loop = function() {
+
+    requestAnimFrame(tw.loop);
+
+    for (var t in tw.all) {
+        if (tw.all.hasOwnProperty(t)) {
+            if (!tw.all[t].paused) {
                 tw.all[t].fn(tw.all[t]);
             }
         }
+    }
 
-    },
-    tween: function(from, to, dur, onStep, onComplete) {
-
-        if (tw.init) tw.init();
-        var id = 'tw' + (tw.c++);
-
-        var data = {
-            from: from,
-            id: id,
-            val: from,
-            to: to,
-            prog: 0,
-            time: 0,
-            inc: dur / (60 * dur),
-            dur: dur,
-            onStep: onStep,
-            onComplete: onComplete
-        };
-
-        var TweenObj = function(data) {
-
-            this.from = data.from;
-            this.id = data.id;
-            this.val = data.from;
-            this.to = data.to;
-            this.prog = 0;
-            this.time = 0;
-            this.inc = data.dur / (60 * data.dur);
-            this.dur = data.dur;
-            this.onStep = data.onStep;
-            this.onComplete = data.onComplete;
-
-        };
-
-        TweenObj.prototype.fn = function(that) {
-
-            that.prog = that.time / that.dur;
-            that.val = tw.ease.easeInOut(that.prog * that.dur, that.from, that.prog * (that.to - that.from), that.dur);
-
-            if (that.time >= that.dur) {
-                that.prog = 1;
-                that.val = that.to;
-                that.onComplete();
-                delete tw.all[that.id];
-            }
-
-            that.onStep({
-                prog: that.prog,
-                val: that.val
-            });
-            that.time += that.inc;
-
-        };
-
-        tw.all[id] = new TweenObj(data);
-
-    },
-    all: {},
-    ease: {}
 };
+tw.tween = function(from, to, dur, onStep, onComplete, paused) {
+
+    if (tw.init) tw.init();
+    var id = 'tw' + (tw.c++);
+
+    var data = {
+        from: from,
+        id: id,
+        val: from,
+        to: to,
+        prog: 0,
+        time: 0,
+        inc: dur / (60 * dur),
+        dur: dur,
+        paused: false,
+        onStep: onStep,
+        onComplete: onComplete
+    };
+
+    tw.all[id] = new tw.TweenObj(data);
+    return tw.all[id];
+
+};
+tw.all = {};
+tw.ease = {};
 
 // To keep things small, only uncomment the ease you use
 // Easing equations by Robert Penner

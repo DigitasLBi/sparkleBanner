@@ -13,33 +13,103 @@ NIBS.main = (function() {
     var _sparkleControl,
         _dur = 0.2,
         _tm1,
+        _$labelA,
+        _$fancyText,
+        _mode = 'less',
+        _textTimeline,
+        _tlMedium,
         _$inner,
         _$textWrapper,
         _$labelBtn,
+        _txt = {},
 
         _textWrapperX = 0,
         _sliderK = 1 / 7,
         $1 = document.querySelector.bind(document),
         $2 = document.querySelectorAll.bind(document);
 
-    _$inner = $1('.dlbi-sparkle-banner-inner');
-    _$textWrapper = $1('.dlbi-sparkle-banner-inner .text-wrapper');
-    _$labelBtn = $1('.the-sparkle-control-wrapper .labels');
-    _$lessLabelBtn = $1('.the-sparkle-control-wrapper .labels .lessBtn');
-    _$mediumLabelBtn = $1('.the-sparkle-control-wrapper .labels .mediumBtn');
-    _$waaayLabelBtn = $1('.the-sparkle-control-wrapper .labels .waaayBtn');
-    _$customLabelBtn = $1('.the-sparkle-control-wrapper .labels .customBtn');
-
     function _setLessMode() {
+
+        console.log(_mode);
+
+        if(_textTimeline) _textTimeline.stop();
+        _textTimeline = _makeTL('less', 0);
+        _textReset('less');
         _animSlider(0.107, function() {
+
             _animInner(1);
             _animTextWrap(0, function() {
                 _$labelBtn.className = 'labels less';
+                _mode = 'less';
             });
+
         });
     }
 
+    function _makeTL(what, dur) {
+
+        var tl = new TimelineLite({
+            onComplete: function() {
+                this.restart();
+            }
+        });
+        var wait = 2;
+        var gap = 0.2;
+
+        tl.to($('.' + what + '-container .fancy_text.msg0'), dur, {
+            opacity: 1
+        });
+        tl.to($('.' + what + '-container .fancy_text.msg0'), dur, {
+            opacity: 0
+        }, '+=' + wait);
+
+        tl.to($('.' + what + '-container .fancy_text.msg1'), dur, {
+            opacity: 1
+        }, '+=' + gap);
+        tl.to($('.' + what + '-container .fancy_text.msg1'), dur, {
+            opacity: 0
+        }, '+=' + wait);
+
+        tl.to($('.' + what + '-container .fancy_text.msg2'), dur, {
+            opacity: 1
+        }, '+=' + gap);
+        tl.to($('.' + what + '-container .fancy_text.msg2'), dur, {
+            opacity: 0
+        }, '+=' + wait);
+
+        tl.to($('.' + what + '-container .fancy_text.msg3'), dur, {
+            opacity: 1
+        }, '+=' + gap);
+        tl.to($('.' + what + '-container .fancy_text.msg3'), dur, {
+            opacity: 0
+        }, '+=' + wait);
+
+        tl.to($('.' + what + '-container .fancy_text.msg4'), dur, {
+            opacity: 1
+        }, '+=' + gap);
+        tl.to($('.' + what + '-container .fancy_text.msg4'), dur, {
+            opacity: 0
+        }, '+=' + wait);
+        return tl;
+
+    }
+
+    function _textReset(selector) {
+
+        var $t = $('.' + selector + '-container .fancy_text ');
+        $t.css('opacity', 0);
+        $t.eq(0).css('opacity', 1);
+
+    }
+
     function _setMediumMode() {
+
+        console.log(_mode);
+
+        if(_textTimeline) _textTimeline.stop();
+        _textTimeline = _makeTL('medium', 0.5);
+
+        _textReset('medium');
         _animSlider(0.373, function() {
             _animInner(1);
             _animTextWrap(1, function() {
@@ -48,6 +118,7 @@ NIBS.main = (function() {
                     dur: 0.2,
                     onComplete: function() {
                         _$labelBtn.className = 'labels medium';
+                        _mode = 'medium';
                         tw.opacity(_$labelBtn, {
                             to: 1,
                             dur: 0.4
@@ -59,11 +130,15 @@ NIBS.main = (function() {
     }
 
     function _setWaaayMode() {
+
+        console.log(_mode);
+        _textReset('waaay');
         _animSlider(0.625, function() {
             _animInner(1);
-            _waayLabelAnim(function() {
-                _$labelBtn.className = 'labels waaay';
-            });
+            if (_mode !== 'custom') {
+                _waayLabelAnim(function() {});
+            }
+            _$labelBtn.className = 'labels waaay';
         });
     }
 
@@ -72,136 +147,130 @@ NIBS.main = (function() {
             offset = 20;
 
 
-            var curr;
-            var j = 0;
-            for (var letter in _tm1.letter) {
-                if (_tm1.letter.hasOwnProperty(letter)) {
+        var curr;
+        var j = 0;
 
-                    var dur22 = 1.4;
+        // for (var letter in _tm1.letter) {
+        //     if (_tm1.letter.hasOwnProperty(letter)) {
+        //
+        //         var dur22 = 1.4;
+        //
+        //         tw.rotate(_tm1.letter[letter], {
+        //             to: _rand(-15, 15),
+        //             dur: dur22,
+        //             delay: 0.05 * j
+        //         });
+        //
+        //         tw.y(_tm1.letter[letter], {
+        //             to: _rand(-15, 15),
+        //             dur: dur22,
+        //             delay: 0.05 * j
+        //         });
+        //
+        //         j++;
+        //
+        //     }
+        // }
 
-                    tw.rotate(_tm1.letter[letter], {
-                        to: _rand(-15, 15),
-                        dur: dur22,
-                        delay: 0.05 * j
-                    });
-
-                    tw.y(_tm1.letter[letter], {
-                        to: _rand(-15, 15),
-                        dur: dur22,
-                        delay: 0.05 * j
-                    });
-
-                    j++;
-
-                }
-            }
+        if(_textTimeline) _textTimeline.stop();
+        _textTimeline = _makeTL('waaay', 0.5);
 
         _animTextWrap(2, function() {
 
-            tw.x(_$lessLabelBtn, {
-                from: 0,
-                to: offset,
-                dur: dur1 * 0.8
-            });
-            tw.x(_$mediumLabelBtn, {
-                from: 0,
-                to: offset,
-                dur: dur1 * 0.8
-            });
-            tw.x(_$waaayLabelBtn, {
-                from: 0,
-                to: offset,
-                dur: dur1 * 0.8
-            });
-            tw.x(_$customLabelBtn, {
-                from: 0,
-                to: offset,
-                dur: dur1 * 0.8
-            });
-
-            tw.opacity(_$labelBtn, {
-                to: 0,
-                dur: 0.3,
+            var $labelA = $('.the-sparkle-control-wrapper .labels a');
+            TweenLite.to($labelA, _dur * 0.8, {
+                scale: 0.7,
+                opacity: 0,
+                ease: Power1.easeInOut,
                 onComplete: function() {
                     onComplete();
-
-                    tw.x(_$lessLabelBtn, {
-                        from: offset * -1,
-                        to: 0,
-                        dur: dur1 * 0.8
-                    });
-                    tw.x(_$mediumLabelBtn, {
-                        from: offset * -1,
-                        to: 0,
-                        dur: dur1 * 0.8
-                    });
-                    tw.x(_$waaayLabelBtn, {
-                        from: offset * -1,
-                        to: 0,
-                        dur: dur1 * 0.8
-                    });
-                    tw.x(_$customLabelBtn, {
-                        from: offset * -1,
-                        to: 0,
-                        dur: dur1 * 0.8
+                    TweenLite.set($labelA, {
+                        scale: 1.3
                     });
 
-                    tw.opacity(_$labelBtn, {
-                        to: 1,
-                        dur: dur1
+                    TweenLite.to($labelA, _dur * 0.8, {
+                        scale: 1,
+                        opacity: 1,
+                        ease: Power1.easeInOut,
+                        onComplete: function() {
+                            _$labelBtn.className = 'labels waaay';
+                            _mode = 'waaay';
+                        }
                     });
-
                 }
             });
+
         });
     }
 
     function _rand(from, to) {
-    	return Math.floor(Math.random() * (to - from + 1) + from);
+        return Math.floor(Math.random() * (to - from + 1) + from);
+    }
+
+    function _each(all, fn) {
+
+        if (all instanceof Array) {
+            var len = all.length,
+                i, curr;
+            for (i = 0; i < len; i += 1) {
+                fn(all[i], i);
+            }
+        } else {
+            var index = 0;
+            for (var it in all) {
+                fn(it, index);
+                index++;
+            }
+        }
+
     }
 
     function _setCustomMode() {
 
-        _animSlider(0.887, function() {
-            _animTextWrap(2);
-            _animInner(0.7, function() {
+        _$fancyText = $('.fancy_text');
+        _$fancyText.css('opacity', 0);
 
+        if(_textTimeline) _textTimeline.stop();
+        _textTimeline = _makeTL('waaay', 0.5);
+
+        _animSlider(0.887, function() {
+            _animTextWrap(2, function () {
+                _mode = 'custom';
             });
-            _waayLabelAnim(function() {
-                _$labelBtn.className = 'labels waaay';
-            });
+            _animInner(0.7, function() {});
+            if (_mode !== 'waaay') {
+                _waayLabelAnim(function() {});
+            }
+
         });
     }
 
     function _animTextWrap(to, callback) {
 
         callback = callback || function() {};
-        var from = _textWrapperX;
-
-        tw.tween(from, to, _dur * 1.3, function(data) {
-            _$textWrapper.style.left = (data.val * -100) + '%';
-            _textWrapperX = data.val;
-        }, callback);
+        TweenLite.to(_$textWrapper, _dur * 1.3, {
+            x: (to * -100) + '%',
+            ease: Power1.easeInOut,
+            onComplete: callback
+        });
 
     }
 
     function _animInner(to, callback) {
 
         callback = callback || function() {};
-        var from = parseInt(_$inner.style.width) / 100;
-        tw.tween(from, to, _dur, function(data) {
-            _$inner.style.width = (data.val * 100) + '%';
-            _sparkleControl.resize();
-        }, callback);
+        TweenLite.to(_$inner, _dur, {
+            width: (to * 100) + '%',
+            ease: Power1.easeInOut,
+            onComplete: callback
+        });
 
     }
 
     function _animSlider(to, callback) {
 
         callback = callback || function() {};
-        var from = _sparkleControl.getValue();
-
-        tw.tween(from, to, _dur, function(data) {
+        tw.tween(_sparkleControl.getValue(), to, _dur, function(data) {
             _sparkleControl.setValue(data.val);
         }, callback);
 
@@ -252,24 +321,35 @@ NIBS.main = (function() {
             code = '',
             data;
 
-        if ($data) {
-            data = $data.innerText.split('|');
+        _$inner = $('.dlbi-sparkle-banner-inner');
+        _$textWrapper = $1('.dlbi-sparkle-banner-inner .text-wrapper');
+        _$labelBtn = $1('.the-sparkle-control-wrapper .labels');
+        _$lessLabelBtn = $1('.the-sparkle-control-wrapper .labels .lessBtn');
+        _$mediumLabelBtn = $1('.the-sparkle-control-wrapper .labels .mediumBtn');
+        _$waaayLabelBtn = $1('.the-sparkle-control-wrapper .labels .waaayBtn');
+        _$customLabelBtn = $1('.the-sparkle-control-wrapper .labels .customBtn');
 
+        _$labelA = $('.the-sparkle-control-wrapper .labels a');
+
+        _$fancyText = $('.fancy_text');
+        _$fancyText.css('opacity', 0);
+
+        if ($data) {
+            data = $data.innerHTML.split('|');
             for (var i = 0; i < data.length; i++) {
                 code += '<div class="fancy_text msg' + i + '">' + data[i] + '</div>';
             }
-
             $1('.less-container').innerHTML = code;
             $1('.medium-container').innerHTML = code;
             $1('.waaay-container').innerHTML = code;
         }
 
-        _tm1 = new MOS.Textmate({
-            selector: '.waaay-container .fancy_text.msg0',
-            updateOnResize: false
-        });
-
-        _tm1.draw('.newText', 1);
+        // _tm1 = new MOS.Textmate({
+        //     selector: '.waaay-container .fancy_text.msg0',
+        //     updateOnResize: false
+        // });
+        //
+        // _tm1.draw('.newText', 1);
 
         _sparkleControl = new MOS.Slider({
             selector: '.the-sparkle-control',
@@ -284,9 +364,8 @@ NIBS.main = (function() {
         });
 
         //NIBS.logMsg.add();
-
-        //_setLessMode();
-        _setWaaayMode();
+        _setLessMode();
+        // _setWaaayMode();
 
         _setupEvents();
 

@@ -18,6 +18,11 @@
         font-weight: normal;
     }
 
+    .logo {
+        width: 9%;
+        vertical-align: middle;
+    }
+
     .data {
         display: none;
     }
@@ -55,15 +60,20 @@
                 }
                 &.waaay-container {
                     left: 200%;
-                    opacity: 0;
                 }
 
                 .fancy_text {
+
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+
                     &.msg0 {}
-                    &.msg1 {display: none;}
-                    &.msg2 {display: none;}
-                    &.msg3 {display: none;}
-                    &.msg4 {display: none;}
+                    // &.msg1 {display: none;}
+                    // &.msg2 {display: none;}
+                    // &.msg3 {display: none;}
+                    // &.msg4 {display: none;}
                 }
             }
 

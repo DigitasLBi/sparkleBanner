@@ -31,19 +31,25 @@ if (tw) {
             onComplete = tw.setDefFn(opt.onComplete);
 
         opt.$target = tw.getTarget(target);
-        opt.dur = opt.dur || 1;
+        opt.dur = (typeof(opt.dur) !== 'undefined') ? opt.dur : 1;
         opt.delay = opt.delay || 0;
         opt.from = opt.from || tw.getFromValue(opt);
 
-        setTimeout(function() {
-            tw.tween(opt.from, opt.to, opt.dur, function(data) {
+        var t = tw.tween(opt.from, opt.to, opt.dur, function(data) {
                 opt.data = data;
                 opt.onTick(opt);
                 onStep(data);
             }, function() {
                 onComplete();
-            });
+            },
+            opt.delay);
+
+        t.tm = setTimeout(function() {
+            t.tm = null;
+            if (t) t.paused = false;
         }, opt.delay * 1000);
+
+        return t;
 
     };
 
@@ -66,7 +72,7 @@ if (tw) {
             } else {
                 rv = tw.getCssProperty(opt.$target, 'top') || 0;
             }
-        } else  if (opt.toTween === 'rotate' || opt.toTween === 'scaleX') {
+        } else if (opt.toTween === 'rotate' || opt.toTween === 'scaleX') {
             rv = tw.getVal(opt.$target, opt.toTween) || 0;
         } else if (opt.toTween === 'scale' || opt.toTween === 'scaleX') {
             rv = tw.getVal(opt.$target, 'scaleX') || 1;
@@ -135,7 +141,7 @@ if (tw) {
                 opt.$target.style.left = opt.data.val + 'px';
             }
         };
-        tw.run(target, opt);
+        return tw.run(target, opt);
     };
     tw.y = function(target, opt) {
         opt.toTween = 'y';
@@ -146,7 +152,7 @@ if (tw) {
                 opt.$target.style.top = opt.data.val + 'px';
             }
         };
-        tw.run(target, opt);
+        return tw.run(target, opt);
     };
     tw.scale = function(target, opt) {
         opt.toTween = 'scale';
@@ -154,21 +160,34 @@ if (tw) {
             tw.transform(opt.$target, 'scaleX', opt.data.val);
             tw.transform(opt.$target, 'scaleY', opt.data.val);
         };
-        tw.run(target, opt);
+        return tw.run(target, opt);
     };
     tw.rotate = function(target, opt) {
         opt.toTween = 'rotate';
         opt.onTick = function(opt) {
             tw.transform(opt.$target, 'rotate', opt.data.val + 'deg');
         };
-        tw.run(target, opt);
+        return tw.run(target, opt);
     };
     tw.opacity = function(target, opt) {
         opt.toTween = 'opacity';
         opt.onTick = function(opt) {
             opt.$target.style.opacity = opt.data.val;
         };
-        tw.run(target, opt);
+        return tw.run(target, opt);
+    };
+
+    tw.q = function (tws) {
+
+        var QObj = function () {
+            this.tws = null;
+        };
+
+        var q = new QObj();
+        q.tws = tws;
+
+        return q;
+
     };
 
 } else {
