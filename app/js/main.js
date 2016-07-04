@@ -22,25 +22,50 @@ NIBS.main = (function() {
         _$textWrapper,
         _$labelBtn,
         _txt = {},
-
         _textWrapperX = 0,
         _sliderK = 1 / 7,
+        _bursTimer,
         $1 = document.querySelector.bind(document),
         $2 = document.querySelectorAll.bind(document);
 
-    function _setLessMode() {
+    function _burst(data) {
 
-        console.log(_mode);
+        NIBS.main.settings.posx = $('.dlbi-sparkle-banner').width() * _sparkleControl.getValue();
+        NIBS.main.settings.numbOfSparks = data.numbOfSparks;
+        NIBS.main.settings.xOffset = data.xOffset;
+        NIBS.main.settings.yOffset = data.yOffset;
+        NIBS.main.settings.particleSize = data.particleSize;
+        NIBS.main.settings.lifeTime = data.lifeTime;
+        if (_bursTimer) clearTimeout(_bursTimer);
+        _bursTimer = setTimeout(function() {
+            NIBS.main.settings.numbOfSparks = 0;
+            NIBS.main.settings.xOffset = 0;
+            NIBS.main.settings.gravity = 0.6;
+            NIBS.main.settings.particleSize = 1;
+            NIBS.main.settings.lifeTime = 40;
+        }, data.dur * 1000);
+    }
+
+    function _setLessMode() {
 
         if(_textTimeline) _textTimeline.stop();
         _textTimeline = _makeTL('less', 0);
         _textReset('less');
+
         _animSlider(0.107, function() {
 
             _animInner(1);
             _animTextWrap(0, function() {
                 _$labelBtn.className = 'labels less';
                 _mode = 'less';
+                _burst({
+                    numbOfSparks: 25,
+                    xOffset: 10,
+                    yOffset: -5,
+                    dur: 1,
+                    particleSize: 0.6,
+                    lifeTime: 40
+                });
             });
 
         });
@@ -104,8 +129,6 @@ NIBS.main = (function() {
 
     function _setMediumMode() {
 
-        console.log(_mode);
-
         if(_textTimeline) _textTimeline.stop();
         _textTimeline = _makeTL('medium', 0.5);
 
@@ -119,6 +142,14 @@ NIBS.main = (function() {
                     onComplete: function() {
                         _$labelBtn.className = 'labels medium';
                         _mode = 'medium';
+                        _burst({
+                            numbOfSparks: 50,
+                            xOffset: 4,
+                            yOffset: -5,
+                            dur: 2,
+                            particleSize: 1.0,
+                            lifeTime: 40
+                        });
                         tw.opacity(_$labelBtn, {
                             to: 1,
                             dur: 0.4
@@ -131,12 +162,21 @@ NIBS.main = (function() {
 
     function _setWaaayMode() {
 
-        console.log(_mode);
         _textReset('waaay');
         _animSlider(0.625, function() {
             _animInner(1);
             if (_mode !== 'custom') {
-                _waayLabelAnim(function() {});
+                _waayLabelAnim(function() {
+                    _burst({
+                        numbOfSparks: 150,
+                        xOffset: -3,
+                        yOffset: -5,
+                        dur: 180,
+                        ParticleDiff: 0.01,
+                        particleSize: 2,
+                        lifeTime: 50
+                    });
+                });
             }
             _$labelBtn.className = 'labels waaay';
         });
@@ -238,6 +278,7 @@ NIBS.main = (function() {
                 _mode = 'custom';
             });
             _animInner(0.7, function() {});
+
             if (_mode !== 'waaay') {
                 _waayLabelAnim(function() {});
             }
@@ -262,8 +303,13 @@ NIBS.main = (function() {
         TweenLite.to(_$inner, _dur, {
             width: (to * 100) + '%',
             ease: Power1.easeInOut,
-            onComplete: callback
+            onComplete: callback,
+            onUpdate: function () {
+
+            }
         });
+
+        //_sparkleControl.resize();
 
     }
 
@@ -317,6 +363,15 @@ NIBS.main = (function() {
 
     function _run() {
 
+        window.requestAnimFrame = (function() {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                function(callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
+        })();
+
         var $data = $1('.dlbi-sparkle-banner .data'),
             code = '',
             data;
@@ -368,11 +423,26 @@ NIBS.main = (function() {
         // _setWaaayMode();
 
         _setupEvents();
+        requestAnimFrame(NIBS.sparkle.actions);
 
     }
 
     // Public methods & properties ***
     return {
-        run: _run
+        run: _run,
+        settings: {
+            posx: 400,
+            posy: $('.dlbi-sparkle-banner').height() - 70,
+            trailAlpha: 1,
+            numbOfSparks: 0,
+            gravity: 0.6,
+            speed: 0.5,
+            particleSize: 1,
+            ParticleDiff: 0.8,
+            spread: 20,
+            xOffset: 0,
+            yOffset: 5,
+            lifeTime: 40
+        }
     };
 }());

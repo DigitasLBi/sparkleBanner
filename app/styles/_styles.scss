@@ -23,6 +23,13 @@
         vertical-align: middle;
     }
 
+    #logo_digitaslbi {
+        position: absolute;
+        left: 10px;
+        width: 90px;
+        top: 10px;
+    }
+
     .data {
         display: none;
     }
@@ -38,12 +45,21 @@
         overflow: hidden;
         box-shadow: 5px 0px 35px rgba(0, 0, 0, 0.2);
 
+        #sparkleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+
         .newText,
         .text-wrapper {
 
             text-align: center;
-            font-size: 45px;
+            font-size: 50px;
             position: relative;
+            margin-top: 16px;
 
             .container {
 
