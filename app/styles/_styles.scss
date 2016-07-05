@@ -3,8 +3,8 @@
         animation: do-puls 0.7s infinite linear;
         display: inline-block;
     }
-    .less-container img.do-puls,
-    .medium-container img.do-puls {
+    //.medium-container img.do-puls 
+    .less-container img.do-puls {
         animation: none;
     }
     @keyframes do-puls {
@@ -145,13 +145,13 @@
                 &.waaay {
                     a:link,
                     a:visited {
-                        color: #000;
+                        color: #fff;
                         text-decoration: none;
                         font-family: 'Luckiest Guy', cursive;
                     }
                     a:active,
                     a:hover {
-                        color: #333;
+                        color: $yellow;
                         text-decoration: none;
                     }
                 }

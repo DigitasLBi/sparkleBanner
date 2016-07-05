@@ -200,10 +200,10 @@ NIBS.main = (function() {
                     onComplete: function() {
                         _$labelBtn.className = 'labels medium';
                         _burst({
-                            numbOfSparks: 50,
+                            numbOfSparks: 70,
                             xOffset: 4,
                             yOffset: -5,
-                            dur: 2,
+                            dur: 5,
                             particleSize: 1.0,
                             lifeTime: 40
                         });

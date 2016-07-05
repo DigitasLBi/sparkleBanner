@@ -19,7 +19,7 @@ NIBS.background = (function() {
 
         _bgSpin = new Image();
         _bgSpin.isLoaded = false;
-        _bgSpin.src = 'images/bg-spin.png';
+        _bgSpin.src = 'images/bg-spin.svg';
         _bgSpin.onload = function() {
             _bgSpin.isLoaded = true;
             //context.drawImage(_bgSpin, 100, 100);
@@ -33,8 +33,15 @@ NIBS.background = (function() {
             context.translate(x, y);
             context.rotate(angle * _TO_RADIANS);
             context.globalAlpha = _alpha;
+            context.scale(canvas.width * 1.3 / image.width, canvas.width * 1.3 / image.width);
             context.drawImage(image, -(image.width / 2), -(image.height / 2));
             context.restore();
+
+            context.beginPath();
+            context.rect(0, 0, canvas.width, canvas.height);
+            context.fillStyle = "rgba(0, 0, 0, 0.4)";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
         }
 
         if (_bgSpin.isLoaded) {
