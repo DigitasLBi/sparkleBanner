@@ -1,5 +1,20 @@
 .dlbi-sparkle-banner {
-
+    .do-spin {
+        animation: do-spin 4s infinite linear;
+        display: inline-block;
+    }
+    .less-container img.do-spin,
+    .medium-container img.do-spin {
+        animation: none;
+    }
+    @keyframes do-spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(-359deg);
+        }
+    }
     background-color: #eee;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
@@ -7,35 +22,33 @@
     height: 210px;
     position: relative;
     overflow: hidden;
-
     &size600x400 {
         width: 600px;
         height: 400px;
     }
-
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         margin: 0;
         font-weight: normal;
     }
-
     .logo {
         width: 9%;
         vertical-align: middle;
     }
-
     #logo_digitaslbi {
         position: absolute;
         left: 10px;
         width: 90px;
         top: 10px;
     }
-
     .data {
         display: none;
     }
-
     .dlbi-sparkle-banner-inner {
-
         width: 100%;
         position: absolute;
         top: 0;
@@ -43,31 +56,25 @@
         height: 100%;
         background-color: #fff;
         overflow: hidden;
-        box-shadow: 5px 0px 35px rgba(0, 0, 0, 0.2);
-
+        box-shadow: 5px 0 35px rgba(0, 0, 0, 0.2);
         #sparkleCanvas {
             position: absolute;
             top: 0;
             left: 0;
             pointer-events: none;
         }
-
-
         .newText,
         .text-wrapper {
-
             text-align: center;
-            font-size: 50px;
+            font-size: 57px;
             position: relative;
             margin-top: 16px;
-
+            display: none;
             .container {
-
                 position: absolute;
                 width: 100%;
                 top: 35px;
                 left: 0;
-
                 &.less-container {
                     font-family: serif;
                 }
@@ -76,88 +83,80 @@
                 }
                 &.waaay-container {
                     left: 200%;
+                    font-size: 45px;
+                    font-family: 'Luckiest Guy', cursive;
                 }
-
                 .fancy_text {
-
                     position: absolute;
                     top: 0;
                     left: 0;
                     width: 100%;
-
-                    &.msg0 {}
+                    .textMate {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                    }
+                    // &.msg0 {}
                     // &.msg1 {display: none;}
                     // &.msg2 {display: none;}
                     // &.msg3 {display: none;}
                     // &.msg4 {display: none;}
                 }
             }
-
         }
-
         .newText {
             margin-top: 37px;
         }
-
         .the-sparkle-control-wrapper {
-
             position: absolute;
             width: 100%;
             left: 0;
             bottom: 40px;
-
             .labels {
                 a {
-                    width: 25%;
+                    width: 33%;
                     display: inline-block;
                     text-align: center;
                 }
-
                 &.less {
-
-                    a:link, a:visited {
-            			font-family: serif;
-            		}
-            		a:hover, a:active {
-            			font-family: serif;
-            		}
-
+                    a:link,
+                    a:visited {
+                        font-family: serif;
+                    }
+                    a:active,
+                    a:hover {
+                        font-family: serif;
+                    }
                 }
-
                 &.medium {
-
-                    a:link, a:visited {
-            			color: #000;
-            			text-decoration: none;
-            		}
-            		a:hover, a:active {
-            			color: #333;
-            			text-decoration: none;
-            		}
-
+                    a:link,
+                    a:visited {
+                        color: #000;
+                        text-decoration: none;
+                    }
+                    a:active,
+                    a:hover {
+                        color: #333;
+                        text-decoration: none;
+                    }
                 }
-
                 &.waaay {
-
-                    a:link, a:visited {
-            			color: #000;
-            			text-decoration: none;
-            		}
-            		a:hover, a:active {
-            			color: #333;
-            			text-decoration: none;
-            		}
-
+                    a:link,
+                    a:visited {
+                        color: #000;
+                        text-decoration: none;
+                        font-family: 'Luckiest Guy', cursive;
+                    }
+                    a:active,
+                    a:hover {
+                        color: #333;
+                        text-decoration: none;
+                    }
                 }
-
-
             }
-
-
         }
-
         .slider-wrapper {
-
             position: absolute;
             bottom: 0;
             left: 0;
@@ -167,7 +166,6 @@
             height: 26px;
             background-color: $red;
             background-image: linear-gradient( to right, $red, $orange, $yellow, $green, $blue, $purple );
-
             .slider-handle {
                 position: absolute;
                 left: 0;
@@ -176,26 +174,21 @@
                 cursor: w-resize;
                 box-sizing: border-box;
                 width: 30px;
-                background-color: transparent;;
-
+                background-color: transparent;
                 .marker-mask {
                     width: 2500px;
                     height: 16px;
                     margin-left: -1235px;
-
-                    background-image: url(../images/markerMask.png);
+                    background-image: url("../images/markerMask.png");
                     background-repeat: no-repeat;
                     background-size: 100%;
                 }
             }
-
             &.vertical {
-
                 position: relative;
                 width: 26px;
                 overflow: hidden;
                 box-sizing: border-box;
-
                 .slider-handle {
                     position: absolute;
                     left: 0;
@@ -209,7 +202,5 @@
                 }
             }
         }
-
     }
-
 }

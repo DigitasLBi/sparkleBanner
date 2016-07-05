@@ -12,7 +12,11 @@ NIBS.main = (function() {
 
     var _sparkleControl,
         _dur = 0.2,
+        _tm0,
         _tm1,
+        _tm2,
+        _tm3,
+        _tm4,
         _$labelA,
         _$fancyText,
         _mode = 'less',
@@ -52,7 +56,7 @@ NIBS.main = (function() {
         _textTimeline = _makeTL('less', 0);
         _textReset('less');
 
-        _animSlider(0.107, function() {
+        _animSlider(0.15, function() {
 
             _animInner(1);
             _animTextWrap(0, function() {
@@ -81,8 +85,44 @@ NIBS.main = (function() {
         var wait = 2;
         var gap = 0.2;
 
+        var textAniMate = function (tmTarget) {
+
+            var curr;
+            var j = 0;
+            var dur22 = 1;
+
+            // var letters = tmTarget.target.getElementsByClassName('__tm');
+            // for (var i = 0; i < letters.length; i++) {
+            //     //delay: 0.05 * j
+            //     j++;
+            // }
+
+            // for (var letter in tmTarget.letter) {
+            //     if (tmTarget.letter.hasOwnProperty(letter)) {
+            //         //console.log(tmTarget.letter[letter].innerText);
+            //         tw.rotate(tmTarget.letter[letter], {
+            //             to: _rand(-15, 15),
+            //             dur: dur22,
+            //             delay: 0.05 * j
+            //         });
+            //         tw.y(tmTarget.letter[letter], {
+            //             to: _rand(-5, 5),
+            //             dur: dur22,
+            //             delay: 0.05 * j
+            //         });
+            //         j++;
+            //     }
+            // }
+
+        };
+
         tl.to($('.' + what + '-container .fancy_text.msg0'), dur, {
             opacity: 1
+        });
+        tl.add(function () {
+            if (what === 'waaay') {
+                textAniMate(_tm0);
+            }
         });
         tl.to($('.' + what + '-container .fancy_text.msg0'), dur, {
             opacity: 0
@@ -91,6 +131,11 @@ NIBS.main = (function() {
         tl.to($('.' + what + '-container .fancy_text.msg1'), dur, {
             opacity: 1
         }, '+=' + gap);
+        tl.add(function () {
+            if (what === 'waaay') {
+                textAniMate(_tm1);
+            }
+        });
         tl.to($('.' + what + '-container .fancy_text.msg1'), dur, {
             opacity: 0
         }, '+=' + wait);
@@ -98,6 +143,11 @@ NIBS.main = (function() {
         tl.to($('.' + what + '-container .fancy_text.msg2'), dur, {
             opacity: 1
         }, '+=' + gap);
+        tl.add(function () {
+            if (what === 'waaay') {
+                textAniMate(_tm2);
+            }
+        });
         tl.to($('.' + what + '-container .fancy_text.msg2'), dur, {
             opacity: 0
         }, '+=' + wait);
@@ -105,6 +155,11 @@ NIBS.main = (function() {
         tl.to($('.' + what + '-container .fancy_text.msg3'), dur, {
             opacity: 1
         }, '+=' + gap);
+        tl.add(function () {
+            if (what === 'waaay') {
+                textAniMate(_tm3);
+            }
+        });
         tl.to($('.' + what + '-container .fancy_text.msg3'), dur, {
             opacity: 0
         }, '+=' + wait);
@@ -112,6 +167,11 @@ NIBS.main = (function() {
         tl.to($('.' + what + '-container .fancy_text.msg4'), dur, {
             opacity: 1
         }, '+=' + gap);
+        tl.add(function () {
+            if (what === 'waaay') {
+                textAniMate(_tm4);
+            }
+        });
         tl.to($('.' + what + '-container .fancy_text.msg4'), dur, {
             opacity: 0
         }, '+=' + wait);
@@ -121,6 +181,7 @@ NIBS.main = (function() {
 
     function _textReset(selector) {
 
+        $('.text-wrapper').show();
         var $t = $('.' + selector + '-container .fancy_text ');
         $t.css('opacity', 0);
         $t.eq(0).css('opacity', 1);
@@ -130,10 +191,10 @@ NIBS.main = (function() {
     function _setMediumMode() {
 
         if(_textTimeline) _textTimeline.stop();
-        _textTimeline = _makeTL('medium', 0.5);
+        _textTimeline = _makeTL('medium', 0.48);
 
         _textReset('medium');
-        _animSlider(0.373, function() {
+        _animSlider(0.49, function() {
             _animInner(1);
             _animTextWrap(1, function() {
                 tw.opacity(_$labelBtn, {
@@ -163,54 +224,27 @@ NIBS.main = (function() {
     function _setWaaayMode() {
 
         _textReset('waaay');
-        _animSlider(0.625, function() {
+        _animSlider(0.833, function() {
             _animInner(1);
-            if (_mode !== 'custom') {
-                _waayLabelAnim(function() {
-                    _burst({
-                        numbOfSparks: 150,
-                        xOffset: -3,
-                        yOffset: -5,
-                        dur: 180,
-                        ParticleDiff: 0.01,
-                        particleSize: 2,
-                        lifeTime: 50
-                    });
+            _waayLabelAnim(function() {
+                _burst({
+                    numbOfSparks: 150,
+                    xOffset: -10,
+                    yOffset: -5,
+                    dur: 180,
+                    ParticleDiff: 0.01,
+                    particleSize: 2,
+                    lifeTime: 50
                 });
-            }
-            _$labelBtn.className = 'labels waaay';
+                _$labelBtn.className = 'labels waaay';
+            });
+
         });
     }
 
     function _waayLabelAnim(onComplete) {
         var dur1 = 0.3,
             offset = 20;
-
-
-        var curr;
-        var j = 0;
-
-        // for (var letter in _tm1.letter) {
-        //     if (_tm1.letter.hasOwnProperty(letter)) {
-        //
-        //         var dur22 = 1.4;
-        //
-        //         tw.rotate(_tm1.letter[letter], {
-        //             to: _rand(-15, 15),
-        //             dur: dur22,
-        //             delay: 0.05 * j
-        //         });
-        //
-        //         tw.y(_tm1.letter[letter], {
-        //             to: _rand(-15, 15),
-        //             dur: dur22,
-        //             delay: 0.05 * j
-        //         });
-        //
-        //         j++;
-        //
-        //     }
-        // }
 
         if(_textTimeline) _textTimeline.stop();
         _textTimeline = _makeTL('waaay', 0.5);
@@ -244,7 +278,7 @@ NIBS.main = (function() {
     }
 
     function _rand(from, to) {
-        return Math.floor(Math.random() * (to - from + 1) + from);
+        return Math.random() * (to - from + 1) + from;
     }
 
     function _each(all, fn) {
@@ -263,27 +297,6 @@ NIBS.main = (function() {
             }
         }
 
-    }
-
-    function _setCustomMode() {
-
-        _$fancyText = $('.fancy_text');
-        _$fancyText.css('opacity', 0);
-
-        if(_textTimeline) _textTimeline.stop();
-        _textTimeline = _makeTL('waaay', 0.5);
-
-        _animSlider(0.887, function() {
-            _animTextWrap(2, function () {
-                _mode = 'custom';
-            });
-            _animInner(0.7, function() {});
-
-            if (_mode !== 'waaay') {
-                _waayLabelAnim(function() {});
-            }
-
-        });
     }
 
     function _animTextWrap(to, callback) {
@@ -336,16 +349,11 @@ NIBS.main = (function() {
             e.stopPropagation();
             _setWaaayMode();
         });
-        $1('.the-sparkle-control-wrapper .customBtn').addEventListener('click', function(e) {
-            e.stopPropagation();
-            _setCustomMode();
-        });
-
     }
 
     function _doSnap() {
 
-        var limLess = 1.75,
+        var limLess = 2.3,
             limMedium = limLess * 2,
             limwaaay = limLess * 3;
 
@@ -355,10 +363,7 @@ NIBS.main = (function() {
             _setMediumMode();
         } else if (_sparkleControl.value > _sliderK * limMedium && _sparkleControl.value <= _sliderK * limwaaay) {
             _setWaaayMode();
-        } else {
-            _setCustomMode();
         }
-
     }
 
     function _run() {
@@ -382,7 +387,6 @@ NIBS.main = (function() {
         _$lessLabelBtn = $1('.the-sparkle-control-wrapper .labels .lessBtn');
         _$mediumLabelBtn = $1('.the-sparkle-control-wrapper .labels .mediumBtn');
         _$waaayLabelBtn = $1('.the-sparkle-control-wrapper .labels .waaayBtn');
-        _$customLabelBtn = $1('.the-sparkle-control-wrapper .labels .customBtn');
 
         _$labelA = $('.the-sparkle-control-wrapper .labels a');
 
@@ -390,6 +394,7 @@ NIBS.main = (function() {
         _$fancyText.css('opacity', 0);
 
         if ($data) {
+            $('.text-wrapper').hide();
             data = $data.innerHTML.split('|');
             for (var i = 0; i < data.length; i++) {
                 code += '<div class="fancy_text msg' + i + '">' + data[i] + '</div>';
@@ -398,13 +403,6 @@ NIBS.main = (function() {
             $1('.medium-container').innerHTML = code;
             $1('.waaay-container').innerHTML = code;
         }
-
-        // _tm1 = new MOS.Textmate({
-        //     selector: '.waaay-container .fancy_text.msg0',
-        //     updateOnResize: false
-        // });
-        //
-        // _tm1.draw('.newText', 1);
 
         _sparkleControl = new MOS.Slider({
             selector: '.the-sparkle-control',
@@ -419,8 +417,9 @@ NIBS.main = (function() {
         });
 
         //NIBS.logMsg.add();
-        _setLessMode();
-        // _setWaaayMode();
+        //_setLessMode();
+        //_setMediumMode();
+         _setWaaayMode();
 
         _setupEvents();
         requestAnimFrame(NIBS.sparkle.actions);

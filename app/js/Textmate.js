@@ -117,7 +117,8 @@ MOS.Textmate.prototype.refres = function () {
         that.prerun();
     }
 
-    letters = that.get.$2('.__tm');
+    letters = that.target.getElementsByClassName('__tm');
+    //console.log(letters);
     for (var i = 0; i < letters.length; i++) {
         rv.push({
             pos: that.getOffset(letters[i]),
