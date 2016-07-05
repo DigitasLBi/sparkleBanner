@@ -347,7 +347,7 @@ NIBS.main = (function() {
                 _setLessMode();
             }
 
-        }, 5000);
+        }, 3000);
     }
 
     function _autoPlayOff() {

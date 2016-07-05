@@ -4,8 +4,7 @@
 
 var tw = {};
 tw.c = 0;
-tw.TweenObj = function(data) {
-
+tw.TwO = function(data) {
 
     this.from = data.from;
     this.id = data.id;
@@ -21,7 +20,7 @@ tw.TweenObj = function(data) {
 
 };
 
-tw.TweenObj.prototype.fn = function(scope) {
+tw.TwO.prototype.fn = function(scope) {
 
     scope.prog = scope.time / scope.dur;
     scope.val = tw.ease.easeInOut(scope.prog * scope.dur, scope.from, scope.prog * (scope.to - scope.from), scope.dur);
@@ -41,7 +40,7 @@ tw.TweenObj.prototype.fn = function(scope) {
 
 };
 
-tw.TweenObj.prototype.kill = function() {
+tw.TwO.prototype.kill = function() {
 
     var that = this,
         t = tw.all[that.id];
@@ -73,7 +72,7 @@ tw.loop = function() {
         if (tw.all.hasOwnProperty(t)) {
             if (!tw.all[t].paused) {
                 tw.all[t].fn(tw.all[t]);
-            } 
+            }
         }
     }
 
@@ -97,7 +96,7 @@ tw.tween = function(from, to, dur, onStep, onComplete, paused) {
         onComplete: onComplete
     };
 
-    tw.all[id] = new tw.TweenObj(data);
+    tw.all[id] = new tw.TwO(data);
     return tw.all[id];
 
 };
