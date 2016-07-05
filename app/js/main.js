@@ -52,7 +52,7 @@ NIBS.main = (function() {
 
     function _setLessMode() {
 
-        if(_textTimeline) _textTimeline.stop();
+        if (_textTimeline) _textTimeline.stop();
         _textTimeline = _makeTL('less', 0);
         _textReset('less');
 
@@ -77,51 +77,99 @@ NIBS.main = (function() {
 
     function _makeTL(what, dur) {
 
-        var tl = new TimelineLite({
+        if (_textTimeline) {
+            _textTimeline.kill();
+        }
+
+        var
+            wait = 2,
+            gap = 0.2,
+            tl = new tw.Q({
             onComplete: function() {
                 this.restart();
             }
         });
-        var wait = 2;
-        var gap = 0.2;
 
-        tl.to($('.' + what + '-container .fancy_text.msg0'), dur, {
-            opacity: 1
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg0',
+            what: 'opacity',
+            to: 1,
+            dur: dur
         });
-        tl.to($('.' + what + '-container .fancy_text.msg0'), dur, {
-            opacity: 0
-        }, '+=' + wait);
 
-        tl.to($('.' + what + '-container .fancy_text.msg1'), dur, {
-            opacity: 1
-        }, '+=' + gap);
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg0',
+            what: 'opacity',
+            to: 0,
+            dur: dur,
+            delay: wait
+        });
 
-        tl.to($('.' + what + '-container .fancy_text.msg1'), dur, {
-            opacity: 0
-        }, '+=' + wait);
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg1',
+            what: 'opacity',
+            to: 1,
+            dur: dur,
+            delay: gap
+        });
 
-        tl.to($('.' + what + '-container .fancy_text.msg2'), dur, {
-            opacity: 1
-        }, '+=' + gap);
-        tl.to($('.' + what + '-container .fancy_text.msg2'), dur, {
-            opacity: 0
-        }, '+=' + wait);
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg1',
+            what: 'opacity',
+            to: 0,
+            dur: dur,
+            delay: wait
+        });
 
-        tl.to($('.' + what + '-container .fancy_text.msg3'), dur, {
-            opacity: 1
-        }, '+=' + gap);
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg2',
+            what: 'opacity',
+            to: 1,
+            dur: dur,
+            delay: gap
+        });
 
-        tl.to($('.' + what + '-container .fancy_text.msg3'), dur, {
-            opacity: 0
-        }, '+=' + wait);
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg2',
+            what: 'opacity',
+            to: 0,
+            dur: dur,
+            delay: wait
+        });
 
-        tl.to($('.' + what + '-container .fancy_text.msg4'), dur, {
-            opacity: 1
-        }, '+=' + gap);
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg3',
+            what: 'opacity',
+            to: 1,
+            dur: dur,
+            delay: gap
+        });
 
-        tl.to($('.' + what + '-container .fancy_text.msg4'), dur, {
-            opacity: 0
-        }, '+=' + wait);
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg3',
+            what: 'opacity',
+            to: 0,
+            dur: dur,
+            delay: wait
+        });
+
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg4',
+            what: 'opacity',
+            to: 1,
+            dur: dur,
+            delay: gap
+        });
+
+        tl.add({
+            t: '.' + what + '-container .fancy_text.msg4',
+            what: 'opacity',
+            to: 0,
+            dur: dur,
+            delay: wait
+        });
+
+        tl.play();
 
         return tl;
 
@@ -138,8 +186,8 @@ NIBS.main = (function() {
 
     function _setMediumMode() {
 
-        if(_textTimeline) _textTimeline.stop();
-        _textTimeline = _makeTL('medium', 0.48);
+        if (_textTimeline) _textTimeline.stop();
+        _textTimeline = _makeTL('medium', 0.5);
 
         _textReset('medium');
         _animSlider(0.49, function() {
@@ -194,16 +242,29 @@ NIBS.main = (function() {
         var dur1 = 0.3,
             offset = 20;
 
-        if(_textTimeline) _textTimeline.stop();
+        if (_textTimeline) _textTimeline.stop();
         _textTimeline = _makeTL('waaay', 0.5);
 
         _animTextWrap(2, function() {
             var $label = $2('.the-sparkle-control-wrapper .labels a');
-            tw.m($label, 'scale', { to: 0.5, dur: _dur * 0.8 });
-            tw.m($label, 'opacity', { to: 0, dur: _dur * 0.8 }, function () {
+            tw.m($label, 'scale', {
+                to: 0.5,
+                dur: _dur * 0.8
+            });
+            tw.m($label, 'opacity', {
+                to: 0,
+                dur: _dur * 0.8
+            }, function() {
                 onComplete();
-                tw.m($label, 'scale', { from: 2.5, to: 1, dur: _dur * 0.8 });
-                tw.m($label, 'opacity', { to: 1, dur: _dur * 0.8 }, function () {
+                tw.m($label, 'scale', {
+                    from: 2.5,
+                    to: 1,
+                    dur: _dur * 0.8
+                });
+                tw.m($label, 'opacity', {
+                    to: 1,
+                    dur: _dur * 0.8
+                }, function() {
                     _$labelBtn.className = 'labels waaay';
                     _mode = 'waaay';
                 });
@@ -352,7 +413,7 @@ NIBS.main = (function() {
         //NIBS.logMsg.add();
         //_setLessMode();
         //_setMediumMode();
-         _setWaaayMode();
+        _setWaaayMode();
 
         _setupEvents();
         requestAnimFrame(NIBS.sparkle.actions);

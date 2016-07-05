@@ -33,7 +33,10 @@ if (tw) {
         opt.$target = tw.getTarget(target);
         opt.dur = (typeof(opt.dur) !== 'undefined') ? opt.dur : 1;
         opt.delay = opt.delay || 0;
+        opt.paused = (typeof(opt.delay) === 'undefined' || opt.delay === 0) ? false : true;
         opt.from = opt.from || tw.getFromValue(opt);
+
+
 
         var t = tw.tween(opt.from, opt.to, opt.dur, function(data) {
                 opt.data = data;
@@ -42,7 +45,7 @@ if (tw) {
             }, function() {
                 onComplete();
             },
-            opt.delay);
+            opt.paused);
 
         t.tm = setTimeout(function() {
             t.tm = null;
@@ -210,18 +213,128 @@ if (tw) {
 
     };
 
-    tw.q = function (tws) {
+    var tw = tw || {};
+    tw.Q = function (data) {
 
-        var QObj = function () {
-            this.tws = null;
-        };
-
-        var q = new QObj();
-        q.tws = tws;
-
-        return q;
+        var that = this;
+        that.q = [];
+        that.index = 0;
+        that.currTw = null;
+        that.data = data;
+        that.goNext = true;
+        that.id = 'Q' + tw.Q.getId();
+        that.setup(that.data);
 
     };
+
+    tw.Q.prototype = {};
+
+    tw.Q.prototype.setup = function () {
+
+        var that = this;
+        if (that.data.onComplete) {
+            that.onComplete = that.data.onComplete;
+        }
+
+        tw.Q.all[that.id] = that;
+
+    };
+
+    tw.Q.prototype.add = function (data) {
+
+        var that = this;
+        that.q.push(data);
+
+    };
+
+    tw.Q.prototype.onComplete = function () {
+
+        var that = this;
+
+    };
+
+    tw.Q.prototype.restart = function () {
+        this.play();
+    };
+
+    tw.Q.prototype.play = function () {
+
+        var that = this;
+        that.goNext = true;
+        that.index = 0;
+        that.currTw = null;
+        that.nextFn.call(that);
+
+    };
+
+    tw.Q.prototype.stop = function () {
+
+    	var that = this;
+
+
+
+        that.goNext = false;
+        if (that.currTw) {
+            that.currTw.kill();
+            that.currTw = null;
+        } else {
+            that.currTw = null;
+        }
+        that.index = 0;
+
+    };
+
+    tw.Q.prototype.nextFn = function () {
+
+        var that = this;
+
+        if (that.index >= that.q.length) {
+            //console.log(that.q);
+            that.onComplete();
+            return;
+        }
+
+        var nuObj = that.q[that.index];
+
+        if (!nuObj) {
+            return;
+        }
+
+        nuObj.delay = nuObj.delay || 0;
+
+        that.currTw = tw[nuObj.what](nuObj.t, {
+            to: nuObj.to,
+            dur: nuObj.dur,
+            delay: nuObj.delay,
+            onComplete: function () {
+                if (that.goNext) {
+                    that.nextFn.call(that);
+                }
+            }
+        });
+        that.index++;
+
+    };
+
+    tw.Q.prototype.kill = function () {
+
+    	var that = this;
+        that.stop();
+        delete tw.Q.all[that.id];
+
+    };
+
+    tw.Q.all = {};
+
+    tw.Q.getId = function() {
+    	return (new Date().getTime()) + (parseInt(Math.random() * 100)).toString();
+    };
+
+    tw.Q.get = {
+        $1: document.querySelector.bind(document), //Node array, usage: var el = $1('.one-time-class');
+        $2: document.querySelectorAll.bind(document) // Direct reference, usage: var alArr = $2('.my-class');
+    };
+
 
 } else {
     console.error('Load tinyTween first.');

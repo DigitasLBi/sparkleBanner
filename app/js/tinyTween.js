@@ -6,12 +6,14 @@ var tw = {};
 tw.c = 0;
 tw.TweenObj = function(data) {
 
+
     this.from = data.from;
     this.id = data.id;
     this.val = data.from;
     this.to = data.to;
     this.prog = 0;
     this.time = 0;
+    this.paused = data.paused;
     this.inc = data.dur / (60 * data.dur);
     this.dur = data.dur;
     this.onStep = data.onStep;
@@ -53,14 +55,14 @@ tw.TweenObj.prototype.kill = function() {
 
 tw.init = function() {
     tw.init = null;
-    // window.requestAnimFrame = (function() {
-    //     return window.requestAnimationFrame ||
-    //         window.webkitRequestAnimationFrame ||
-    //         window.mozRequestAnimationFrame ||
-    //         function(callback) {
-    //             window.setTimeout(callback, 1000 / 60);
-    //         };
-    // })();
+    window.requestAnimFrame = (function() {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            function(callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+    })();
     tw.loop();
 };
 tw.loop = function() {
@@ -71,7 +73,7 @@ tw.loop = function() {
         if (tw.all.hasOwnProperty(t)) {
             if (!tw.all[t].paused) {
                 tw.all[t].fn(tw.all[t]);
-            }
+            } 
         }
     }
 
@@ -90,7 +92,7 @@ tw.tween = function(from, to, dur, onStep, onComplete, paused) {
         time: 0,
         inc: dur / (60 * dur),
         dur: dur,
-        paused: false,
+        paused: paused,
         onStep: onStep,
         onComplete: onComplete
     };
