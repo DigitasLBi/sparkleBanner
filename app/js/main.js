@@ -11,21 +11,15 @@ NIBS.main = (function() {
     // Private methods & properties ***
 
     var _sparkleControl,
+        _autoPlaying = true,
+        _autoPlayingTimeLock,
+        _autoPlayingInterval,
         _dur = 0.2,
-        _tm0,
-        _tm1,
-        _tm2,
-        _tm3,
-        _tm4,
-        _$labelA,
-        _$fancyText,
         _mode = 'less',
         _textTimeline,
-        _tlMedium,
         _$inner,
         _$textWrapper,
         _$labelBtn,
-        _txt = {},
         _textWrapperX = 0,
         _sliderK = 1 / 7,
         _bursTimer,
@@ -52,16 +46,19 @@ NIBS.main = (function() {
 
     function _setLessMode() {
 
-        if (_textTimeline) _textTimeline.stop();
-        _textTimeline = _makeTL('less', 0);
-        _textReset('less');
+        _mode = 'less';
 
+        if (!_autoPlaying) {
+            if (_textTimeline) _textTimeline.stop();
+            _textTimeline = _makeTL('less', 0.1);
+        }
+
+        _textReset('less');
         _animSlider(0.15, function() {
 
             _animInner(1);
             _animTextWrap(0, function() {
                 _$labelBtn.className = 'labels less';
-                _mode = 'less';
                 _burst({
                     numbOfSparks: 25,
                     xOffset: 10,
@@ -82,8 +79,8 @@ NIBS.main = (function() {
         }
 
         var
-            wait = 2,
-            gap = 0.2,
+            wait = 0.9,
+            gap = 0.1,
             tl = new tw.Q({
             onComplete: function() {
                 this.restart();
@@ -166,7 +163,7 @@ NIBS.main = (function() {
             what: 'opacity',
             to: 0,
             dur: dur,
-            delay: wait
+            delay: wait * 5
         });
 
         tl.play();
@@ -186,8 +183,12 @@ NIBS.main = (function() {
 
     function _setMediumMode() {
 
-        if (_textTimeline) _textTimeline.stop();
-        _textTimeline = _makeTL('medium', 0.5);
+        _mode = 'medium';
+
+        if (!_autoPlaying) {
+            if (_textTimeline) _textTimeline.stop();
+            _textTimeline = _makeTL('medium', 0.3);
+        }
 
         _textReset('medium');
         _animSlider(0.49, function() {
@@ -198,7 +199,6 @@ NIBS.main = (function() {
                     dur: 0.2,
                     onComplete: function() {
                         _$labelBtn.className = 'labels medium';
-                        _mode = 'medium';
                         _burst({
                             numbOfSparks: 50,
                             xOffset: 4,
@@ -239,11 +239,16 @@ NIBS.main = (function() {
     }
 
     function _waayLabelAnim(onComplete) {
+
+        _mode = 'waaay';
+
         var dur1 = 0.3,
             offset = 20;
 
-        if (_textTimeline) _textTimeline.stop();
-        _textTimeline = _makeTL('waaay', 0.5);
+        if (!_autoPlaying) {
+            if (_textTimeline) _textTimeline.stop();
+            _textTimeline = _makeTL('waaay', 0.3);
+        }
 
         _animTextWrap(2, function() {
             var $label = $2('.the-sparkle-control-wrapper .labels a');
@@ -266,7 +271,6 @@ NIBS.main = (function() {
                     dur: _dur * 0.8
                 }, function() {
                     _$labelBtn.className = 'labels waaay';
-                    _mode = 'waaay';
                 });
             });
         });
@@ -327,20 +331,57 @@ NIBS.main = (function() {
 
     }
 
+    function _autoPlayOn() {
+
+        _autoPlaying = true;
+        if (_autoPlayingInterval) {
+            clearInterval(_autoPlayingInterval);
+        }
+        _autoPlayingInterval = setInterval(function() {
+
+            if (_mode === 'less') {
+                _setMediumMode();
+            } else if (_mode === 'medium') {
+                _setWaaayMode();
+            } else if (_mode === 'waaay')  {
+                _setLessMode();
+            }
+
+        }, 5000);
+    }
+
+    function _autoPlayOff() {
+
+        _autoPlaying = false;
+        clearInterval(_autoPlayingInterval);
+        if (_autoPlayingTimeLock) clearTimeout(_autoPlayingTimeLock);
+        _autoPlayingTimeLock = setTimeout(_autoPlayOn, 3 * 60000);
+
+    }
+
     function _setupEvents() {
 
-        //window.open(clickTag, "_blank");
+        $1('.dlbi-sparkle-banner .HA').addEventListener('click', function(e) {
+            if (window.clickTag) {
+                window.open(clickTag, "_blank");
+            } else {
+                console.log('Hit Area clicked');
+            }
+        });
 
         $1('.the-sparkle-control-wrapper .lessBtn').addEventListener('click', function(e) {
             e.stopPropagation();
+            _autoPlayOff();
             _setLessMode();
         });
         $1('.the-sparkle-control-wrapper .mediumBtn').addEventListener('click', function(e) {
             e.stopPropagation();
+            _autoPlayOff();
             _setMediumMode();
         });
         $1('.the-sparkle-control-wrapper .waaayBtn').addEventListener('click', function(e) {
             e.stopPropagation();
+            _autoPlayOff();
             _setWaaayMode();
         });
     }
@@ -382,11 +423,6 @@ NIBS.main = (function() {
         _$mediumLabelBtn = $1('.the-sparkle-control-wrapper .labels .mediumBtn');
         _$waaayLabelBtn = $1('.the-sparkle-control-wrapper .labels .waaayBtn');
 
-        _$labelA = $('.the-sparkle-control-wrapper .labels a');
-
-        _$fancyText = $('.fancy_text');
-        _$fancyText.css('opacity', 0);
-
         if ($data) {
             $('.text-wrapper').hide();
             data = $data.innerHTML.split('|');
@@ -407,13 +443,16 @@ NIBS.main = (function() {
             },
             onStop: function(n) {
                 _doSnap();
+                _autoPlayOff();
             }
         });
 
         //NIBS.logMsg.add();
-        //_setLessMode();
+
+        _setLessMode();
+        _autoPlayOn();
         //_setMediumMode();
-        _setWaaayMode();
+        //_setWaaayMode();
 
         _setupEvents();
         requestAnimFrame(NIBS.sparkle.actions);

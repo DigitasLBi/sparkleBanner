@@ -57,6 +57,18 @@
         background-color: #fff;
         overflow: hidden;
         box-shadow: 5px 0 35px rgba(0, 0, 0, 0.2);
+
+        .HA {
+            // background-color: rgba(255, 255, 0, 0.3);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 80px;
+            cursor: pointer;
+        }
+
+
         #sparkleCanvas {
             position: absolute;
             top: 0;
