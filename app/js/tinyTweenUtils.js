@@ -106,9 +106,29 @@ if (tw) {
     tw.setDefFn = function(fn) {
         return fn || function() {};
     };
+    tw.trString = (function(style) {
+
+        if (typeof style.transform !== 'undefined') {
+            //console.log('Use transform');
+            return 'transform';
+        } else if (typeof style.webkitTransform !== 'undefined') {
+            //console.log('Use webkitTransform');
+            return 'webkitTransform';
+        } else if (typeof style.MozTransform !== 'undefined') {
+            //console.log('Use MozTransform');
+            return 'MozTransform';
+        } else if (typeof style.msTransform !== 'undefined') {
+            //console.log('Use msTransform');
+        } else if (style.msTransform) {
+            return 'msTransform';
+        }
+
+        return false;
+    })(document.createElement('div').style);
+
     tw.getVal = function($target, find) {
 
-        var currTransStr = $target.style.transform || $target.style.webkitTransform,
+        var currTransStr = $target.style[tw.trString],
             start = currTransStr.indexOf(find);
 
         if (start > -1) {
@@ -120,7 +140,7 @@ if (tw) {
     };
     tw.transform = function($target, transformName, val) {
 
-        var currTransStr = $target.style.transform || $target.style.webkitTransform,
+        var currTransStr = $target.style[tw.trString],
             currVal = tw.getVal($target, transformName),
             transformString;
 
@@ -137,13 +157,12 @@ if (tw) {
                 $target[i].style.transform = transformString;
             }
         } else {
-            $target.style.webkitTransform = transformString;
-            $target.style.transform = transformString;
+            $target.style[tw.trString] = transformString;
         }
 
     };
 
-    tw.setStyle = function ($target, style, val) {
+    tw.setStyle = function($target, style, val) {
 
         if ($target instanceof Array) {
             for (var i = 0; i < $target.length; i++) {
@@ -201,7 +220,7 @@ if (tw) {
         return tw.run(target, opt);
     };
 
-    tw.m = function (arr, what, opt, onComplete) {
+    tw.m = function(arr, what, opt, onComplete) {
 
         for (var i = 0; i < arr.length; i++) {
             var optClone = JSON.parse(JSON.stringify(opt));
@@ -214,7 +233,7 @@ if (tw) {
     };
 
     var tw = tw || {};
-    tw.Q = function (data) {
+    tw.Q = function(data) {
 
         var that = this;
         that.q = [];
@@ -229,7 +248,7 @@ if (tw) {
 
     tw.Q.prototype = {};
 
-    tw.Q.prototype.setup = function () {
+    tw.Q.prototype.setup = function() {
 
         var that = this;
         if (that.data.onComplete) {
@@ -240,24 +259,24 @@ if (tw) {
 
     };
 
-    tw.Q.prototype.add = function (data) {
+    tw.Q.prototype.add = function(data) {
 
         var that = this;
         that.q.push(data);
 
     };
 
-    tw.Q.prototype.onComplete = function () {
+    tw.Q.prototype.onComplete = function() {
 
         var that = this;
 
     };
 
-    tw.Q.prototype.restart = function () {
+    tw.Q.prototype.restart = function() {
         this.play();
     };
 
-    tw.Q.prototype.play = function () {
+    tw.Q.prototype.play = function() {
 
         var that = this;
         that.goNext = true;
@@ -267,9 +286,9 @@ if (tw) {
 
     };
 
-    tw.Q.prototype.stop = function () {
+    tw.Q.prototype.stop = function() {
 
-    	var that = this;
+        var that = this;
 
 
 
@@ -284,7 +303,7 @@ if (tw) {
 
     };
 
-    tw.Q.prototype.nextFn = function () {
+    tw.Q.prototype.nextFn = function() {
 
         var that = this;
 
@@ -306,7 +325,7 @@ if (tw) {
             to: nuObj.to,
             dur: nuObj.dur,
             delay: nuObj.delay,
-            onComplete: function () {
+            onComplete: function() {
                 if (that.goNext) {
                     that.nextFn.call(that);
                 }
@@ -316,9 +335,9 @@ if (tw) {
 
     };
 
-    tw.Q.prototype.kill = function () {
+    tw.Q.prototype.kill = function() {
 
-    	var that = this;
+        var that = this;
         that.stop();
         delete tw.Q.all[that.id];
 
@@ -327,7 +346,7 @@ if (tw) {
     tw.Q.all = {};
 
     tw.Q.getId = function() {
-    	return (new Date().getTime()) + (parseInt(Math.random() * 100)).toString();
+        return (new Date().getTime()) + (parseInt(Math.random() * 100)).toString();
     };
 
     tw.Q.get = {
