@@ -122,6 +122,7 @@ NIBS.main = (function() {
         tl.to($('.' + what + '-container .fancy_text.msg4'), dur, {
             opacity: 0
         }, '+=' + wait);
+
         return tl;
 
     }
@@ -197,30 +198,16 @@ NIBS.main = (function() {
         _textTimeline = _makeTL('waaay', 0.5);
 
         _animTextWrap(2, function() {
-
-            var $labelA = $('.the-sparkle-control-wrapper .labels a');
-            TweenLite.to($labelA, _dur * 0.8, {
-                scale: 05,
-                opacity: 0,
-                ease: Power1.easeInOut,
-                onComplete: function() {
-                    onComplete();
-                    TweenLite.set($labelA, {
-                        scale: 1.4
-                    });
-
-                    TweenLite.to($labelA, _dur * 0.8, {
-                        scale: 1,
-                        opacity: 1,
-                        ease: Power1.easeInOut,
-                        onComplete: function() {
-                            _$labelBtn.className = 'labels waaay';
-                            _mode = 'waaay';
-                        }
-                    });
-                }
+            var $label = $2('.the-sparkle-control-wrapper .labels a');
+            tw.m($label, 'scale', { to: 0.5, dur: _dur * 0.8 });
+            tw.m($label, 'opacity', { to: 0, dur: _dur * 0.8 }, function () {
+                onComplete();
+                tw.m($label, 'scale', { from: 2.5, to: 1, dur: _dur * 0.8 });
+                tw.m($label, 'opacity', { to: 1, dur: _dur * 0.8 }, function () {
+                    _$labelBtn.className = 'labels waaay';
+                    _mode = 'waaay';
+                });
             });
-
         });
     }
 
@@ -249,27 +236,24 @@ NIBS.main = (function() {
     function _animTextWrap(to, callback) {
 
         callback = callback || function() {};
-        TweenLite.to(_$textWrapper, _dur * 1.3, {
-            x: (to * -100) + '%',
-            ease: Power1.easeInOut,
-            onComplete: callback
-        });
+        var from = _textWrapperX;
+
+        tw.tween(from, to, _dur * 1.3, function(data) {
+            _$textWrapper.style.left = (data.val * -100) + '%';
+            _textWrapperX = data.val;
+        }, callback);
 
     }
+
 
     function _animInner(to, callback) {
 
         callback = callback || function() {};
-        TweenLite.to(_$inner, _dur, {
-            width: (to * 100) + '%',
-            ease: Power1.easeInOut,
-            onComplete: callback,
-            onUpdate: function () {
-
-            }
-        });
-
-        //_sparkleControl.resize();
+        var from = parseInt(_$inner.style.width) / 100;
+        tw.tween(from, to, _dur, function(data) {
+            _$inner.style.width = (data.val * 100) + '%';
+            _sparkleControl.resize();
+        }, callback);
 
     }
 
@@ -330,7 +314,7 @@ NIBS.main = (function() {
             code = '',
             data;
 
-        _$inner = $('.dlbi-sparkle-banner-inner');
+        _$inner = $1('.dlbi-sparkle-banner-inner');
         _$textWrapper = $1('.dlbi-sparkle-banner-inner .text-wrapper');
         _$labelBtn = $1('.the-sparkle-control-wrapper .labels');
         _$lessLabelBtn = $1('.the-sparkle-control-wrapper .labels .lessBtn');

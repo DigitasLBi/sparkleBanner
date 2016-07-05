@@ -127,8 +127,28 @@ if (tw) {
             transformString = currTransStr.split(transformName + '(' + currVal + ')').join(transformName + '(' + val + ')');
         }
 
-        $target.style.webkitTransform = transformString;
-        $target.style.transform = transformString;
+        if ($target instanceof Array) {
+            for (var i = 0; i < $target.length; i++) {
+                $target[i].style[style] = val;
+                $target[i].style.webkitTransform = transformString;
+                $target[i].style.transform = transformString;
+            }
+        } else {
+            $target.style.webkitTransform = transformString;
+            $target.style.transform = transformString;
+        }
+
+    };
+
+    tw.setStyle = function ($target, style, val) {
+
+        if ($target instanceof Array) {
+            for (var i = 0; i < $target.length; i++) {
+                $target[i].style[style] = val;
+            }
+        } else {
+            $target.style[style] = val;
+        }
     };
 
     tw.x = function(target, opt) {
@@ -149,7 +169,8 @@ if (tw) {
             if (tw.supportsCssTransitions) {
                 tw.transform(opt.$target, 'translateY', opt.data.val + 'px');
             } else {
-                opt.$target.style.top = opt.data.val + 'px';
+                //opt.$target.style.top = opt.data.val + 'px';
+                tw.setStyle(opt.$target, 'top', opt.data.val + 'px');
             }
         };
         return tw.run(target, opt);
@@ -172,9 +193,21 @@ if (tw) {
     tw.opacity = function(target, opt) {
         opt.toTween = 'opacity';
         opt.onTick = function(opt) {
-            opt.$target.style.opacity = opt.data.val;
+            tw.setStyle(opt.$target, 'opacity', opt.data.val);
         };
         return tw.run(target, opt);
+    };
+
+    tw.m = function (arr, what, opt, onComplete) {
+
+        for (var i = 0; i < arr.length; i++) {
+            var optClone = JSON.parse(JSON.stringify(opt));
+            if (i === arr.length - 1) {
+                optClone.onComplete = onComplete;
+            }
+            tw[what](arr[i], optClone);
+        }
+
     };
 
     tw.q = function (tws) {
