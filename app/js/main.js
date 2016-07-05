@@ -85,44 +85,8 @@ NIBS.main = (function() {
         var wait = 2;
         var gap = 0.2;
 
-        var textAniMate = function (tmTarget) {
-
-            var curr;
-            var j = 0;
-            var dur22 = 1;
-
-            // var letters = tmTarget.target.getElementsByClassName('__tm');
-            // for (var i = 0; i < letters.length; i++) {
-            //     //delay: 0.05 * j
-            //     j++;
-            // }
-
-            // for (var letter in tmTarget.letter) {
-            //     if (tmTarget.letter.hasOwnProperty(letter)) {
-            //         //console.log(tmTarget.letter[letter].innerText);
-            //         tw.rotate(tmTarget.letter[letter], {
-            //             to: _rand(-15, 15),
-            //             dur: dur22,
-            //             delay: 0.05 * j
-            //         });
-            //         tw.y(tmTarget.letter[letter], {
-            //             to: _rand(-5, 5),
-            //             dur: dur22,
-            //             delay: 0.05 * j
-            //         });
-            //         j++;
-            //     }
-            // }
-
-        };
-
         tl.to($('.' + what + '-container .fancy_text.msg0'), dur, {
             opacity: 1
-        });
-        tl.add(function () {
-            if (what === 'waaay') {
-                textAniMate(_tm0);
-            }
         });
         tl.to($('.' + what + '-container .fancy_text.msg0'), dur, {
             opacity: 0
@@ -131,11 +95,7 @@ NIBS.main = (function() {
         tl.to($('.' + what + '-container .fancy_text.msg1'), dur, {
             opacity: 1
         }, '+=' + gap);
-        tl.add(function () {
-            if (what === 'waaay') {
-                textAniMate(_tm1);
-            }
-        });
+
         tl.to($('.' + what + '-container .fancy_text.msg1'), dur, {
             opacity: 0
         }, '+=' + wait);
@@ -143,11 +103,6 @@ NIBS.main = (function() {
         tl.to($('.' + what + '-container .fancy_text.msg2'), dur, {
             opacity: 1
         }, '+=' + gap);
-        tl.add(function () {
-            if (what === 'waaay') {
-                textAniMate(_tm2);
-            }
-        });
         tl.to($('.' + what + '-container .fancy_text.msg2'), dur, {
             opacity: 0
         }, '+=' + wait);
@@ -155,11 +110,7 @@ NIBS.main = (function() {
         tl.to($('.' + what + '-container .fancy_text.msg3'), dur, {
             opacity: 1
         }, '+=' + gap);
-        tl.add(function () {
-            if (what === 'waaay') {
-                textAniMate(_tm3);
-            }
-        });
+
         tl.to($('.' + what + '-container .fancy_text.msg3'), dur, {
             opacity: 0
         }, '+=' + wait);
@@ -167,11 +118,7 @@ NIBS.main = (function() {
         tl.to($('.' + what + '-container .fancy_text.msg4'), dur, {
             opacity: 1
         }, '+=' + gap);
-        tl.add(function () {
-            if (what === 'waaay') {
-                textAniMate(_tm4);
-            }
-        });
+
         tl.to($('.' + what + '-container .fancy_text.msg4'), dur, {
             opacity: 0
         }, '+=' + wait);
@@ -253,13 +200,13 @@ NIBS.main = (function() {
 
             var $labelA = $('.the-sparkle-control-wrapper .labels a');
             TweenLite.to($labelA, _dur * 0.8, {
-                scale: 0.7,
+                scale: 05,
                 opacity: 0,
                 ease: Power1.easeInOut,
                 onComplete: function() {
                     onComplete();
                     TweenLite.set($labelA, {
-                        scale: 1.3
+                        scale: 1.4
                     });
 
                     TweenLite.to($labelA, _dur * 0.8, {
@@ -336,6 +283,8 @@ NIBS.main = (function() {
     }
 
     function _setupEvents() {
+
+        //window.open(clickTag, "_blank");
 
         $1('.the-sparkle-control-wrapper .lessBtn').addEventListener('click', function(e) {
             e.stopPropagation();
