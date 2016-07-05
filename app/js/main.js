@@ -15,7 +15,6 @@ NIBS.main = (function() {
         _autoPlayingTimeLock,
         _autoPlayingInterval,
         _dur = 0.2,
-        _mode = 'less',
         _textTimeline,
         _$inner,
         _$textWrapper,
@@ -46,7 +45,7 @@ NIBS.main = (function() {
 
     function _setLessMode() {
 
-        _mode = 'less';
+        NIBS.main.mode = 'less';
 
         if (!_autoPlaying) {
             if (_textTimeline) _textTimeline.stop();
@@ -55,7 +54,7 @@ NIBS.main = (function() {
 
         _textReset('less');
         _animSlider(0.15, function() {
-
+            $1('.the-sparkle-control .slider-handle').className = 'slider-handle less';
             _animInner(1);
             _animTextWrap(0, function() {
                 _$labelBtn.className = 'labels less';
@@ -79,7 +78,7 @@ NIBS.main = (function() {
         }
 
         var
-            wait = 0.9,
+            wait = 1.2,
             gap = 0.1,
             tl = new tw.Q({
             onComplete: function() {
@@ -183,7 +182,7 @@ NIBS.main = (function() {
 
     function _setMediumMode() {
 
-        _mode = 'medium';
+        NIBS.main.mode = 'medium';
 
         if (!_autoPlaying) {
             if (_textTimeline) _textTimeline.stop();
@@ -192,6 +191,7 @@ NIBS.main = (function() {
 
         _textReset('medium');
         _animSlider(0.49, function() {
+            $1('.the-sparkle-control .slider-handle').className = 'slider-handle medium';
             _animInner(1);
             _animTextWrap(1, function() {
                 tw.opacity(_$labelBtn, {
@@ -221,6 +221,7 @@ NIBS.main = (function() {
 
         _textReset('waaay');
         _animSlider(0.833, function() {
+            $1('.the-sparkle-control .slider-handle').className = 'slider-handle waaay';
             _animInner(1);
             _waayLabelAnim(function() {
                 _burst({
@@ -232,7 +233,6 @@ NIBS.main = (function() {
                     particleSize: 2,
                     lifeTime: 50
                 });
-                _$labelBtn.className = 'labels waaay';
             });
 
         });
@@ -240,7 +240,7 @@ NIBS.main = (function() {
 
     function _waayLabelAnim(onComplete) {
 
-        _mode = 'waaay';
+        NIBS.main.mode = 'waaay';
 
         var dur1 = 0.3,
             offset = 20;
@@ -339,11 +339,11 @@ NIBS.main = (function() {
         }
         _autoPlayingInterval = setInterval(function() {
 
-            if (_mode === 'less') {
+            if (NIBS.main.mode === 'less') {
                 _setMediumMode();
-            } else if (_mode === 'medium') {
+            } else if (NIBS.main.mode === 'medium') {
                 _setWaaayMode();
-            } else if (_mode === 'waaay')  {
+            } else if (NIBS.main.mode === 'waaay')  {
                 _setLessMode();
             }
 
@@ -457,11 +457,14 @@ NIBS.main = (function() {
         _setupEvents();
         requestAnimFrame(NIBS.sparkle.actions);
 
+        NIBS.background.run();
+
     }
 
     // Public methods & properties ***
     return {
         run: _run,
+        mode: 'less',
         settings: {
             posx: 400,
             posy: $('.dlbi-sparkle-banner').height() - 70,

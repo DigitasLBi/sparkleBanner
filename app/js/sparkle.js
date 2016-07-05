@@ -9,7 +9,7 @@ NIBS.sparkle = (function() {
     canvas.width = $('.dlbi-sparkle-banner').width();
     canvas.height = $('.dlbi-sparkle-banner').height();
 
-
+    var _frameCount = 0;
     var _fps = 60;
     var particles = {},
         particleIndex = 0;
@@ -104,6 +104,9 @@ NIBS.sparkle = (function() {
         context.fillStyle = 'rgba(255, 255, 255, ' + NIBS.main.settings.trailAlpha + ')';
         context.fillRect(0, 0, canvas.width, canvas.height);
 
+        //Draw background stuff
+        NIBS.background.draw();
+
         // Draw the particles
         for (var i = 0; i < NIBS.main.settings.numbOfSparks; i++) {
             if (Math.random() > 0.97) {
@@ -114,6 +117,8 @@ NIBS.sparkle = (function() {
         for (i in particles) {
             particles[i].draw();
         }
+
+        _frameCount++;
 
     }
 

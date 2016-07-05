@@ -1,18 +1,21 @@
 .dlbi-sparkle-banner {
-    .do-spin {
-        animation: do-spin 4s infinite linear;
+    .do-puls {
+        animation: do-puls 0.7s infinite linear;
         display: inline-block;
     }
-    .less-container img.do-spin,
-    .medium-container img.do-spin {
+    .less-container img.do-puls,
+    .medium-container img.do-puls {
         animation: none;
     }
-    @keyframes do-spin {
+    @keyframes do-puls {
         0% {
-            transform: rotate(0deg);
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.2);
         }
         100% {
-            transform: rotate(-359deg);
+            transform: scale(1);
         }
     }
     background-color: #eee;
@@ -25,15 +28,6 @@
     &size600x400 {
         width: 600px;
         height: 400px;
-    }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        margin: 0;
-        font-weight: normal;
     }
     .logo {
         width: 9%;
@@ -55,9 +49,9 @@
         left: 0;
         height: 100%;
         background-color: #fff;
+        color: #000;
         overflow: hidden;
         box-shadow: 5px 0 35px rgba(0, 0, 0, 0.2);
-
         .HA {
             // background-color: rgba(255, 255, 0, 0.3);
             position: absolute;
@@ -67,8 +61,6 @@
             bottom: 80px;
             cursor: pointer;
         }
-
-
         #sparkleCanvas {
             position: absolute;
             top: 0;
@@ -97,6 +89,7 @@
                     left: 200%;
                     font-size: 45px;
                     font-family: 'Luckiest Guy', cursive;
+                    color: #fff;
                 }
                 .fancy_text {
                     position: absolute;
@@ -109,11 +102,6 @@
                         left: 0;
                         width: 100%;
                     }
-                    // &.msg0 {}
-                    // &.msg1 {display: none;}
-                    // &.msg2 {display: none;}
-                    // &.msg3 {display: none;}
-                    // &.msg4 {display: none;}
                 }
             }
         }
@@ -138,6 +126,7 @@
                     }
                     a:active,
                     a:hover {
+                        color: red;
                         font-family: serif;
                     }
                 }
@@ -173,9 +162,9 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            overflow: hidden;
+            // overflow: hidden;
             box-sizing: border-box;
-            height: 26px;
+            height: 20px;
             background-color: $red;
             background-image: linear-gradient( to right, $red, $orange, $yellow, $green, $blue, $purple );
             .slider-handle {
@@ -185,15 +174,31 @@
                 height: 100%;
                 cursor: w-resize;
                 box-sizing: border-box;
-                width: 30px;
+                width: 20px;
                 background-color: transparent;
                 .marker-mask {
-                    width: 2500px;
-                    height: 16px;
-                    margin-left: -1235px;
-                    background-image: url("../images/markerMask.png");
-                    background-repeat: no-repeat;
-                    background-size: 100%;
+                    position: absolute;
+                    top: -10px;
+                    width: 0;
+                    height: 0;
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-bottom: 10px solid #f57d22;
+                }
+                &.less {
+                    .marker-mask {
+                        border-bottom: 10px solid #f57d22;
+                    }
+                }
+                &.medium {
+                    .marker-mask {
+                        border-bottom: 10px solid #9ec72e;
+                    }
+                }
+                &.waaay {
+                    .marker-mask {
+                        border-bottom: 10px solid #4b4ea1;
+                    }
                 }
             }
             &.vertical {
