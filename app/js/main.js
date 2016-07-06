@@ -415,6 +415,7 @@ NIBS.main = (function() {
 
     function _showIEMsg() {
         $('.dlbi-sparkle-banner').addClass('is_a_crap_browser');
+        $('#crap_browser_message iframe').attr('src', '//giphy.com/embed/bZQvimlS7kuGc');
     }
 
     function _run() {
@@ -491,6 +492,7 @@ NIBS.main = (function() {
         run: _run,
         mode: 'less',
         idle: false,
+        showIEMsg: _showIEMsg,
         settings: {
             posx: 400,
             posy: $('.dlbi-sparkle-banner').height() - 70,

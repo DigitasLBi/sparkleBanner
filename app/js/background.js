@@ -35,8 +35,10 @@ NIBS.background = (function() {
             context.translate(x, y);
             context.rotate(angle * _TO_RADIANS);
             context.globalAlpha = _alpha;
-            context.scale(canvas.width * 1.3 / image.width, canvas.width * 1.3 / image.width);
-            context.drawImage(image, -(image.width / 2), -(image.height / 2));
+
+            // var scale = canvas.width * 1.3 / 720;
+            // context.scale(scale, scale);
+            context.drawImage(image, -(1500 / 2), -(1500 / 2));
             context.restore();
 
             context.beginPath();

@@ -2,9 +2,16 @@
 <script src="http://fusion.adtoma.com/spl/html5clickcount.js"></script>
 <script src="js/app.js"></script>
 <script>
-	Zepto(function($) {
-		NIBS.main.run();
-	})
+	try {
+		Zepto(function($) {
+			NIBS.main.run();
+		})
+	} catch (err) { //For IE8 :/
+		var t = document.getElementById('crap_browser_message');
+		t.style.display = 'block';
+		t.getElementsByTagName('iframe')[0].setAttribute('src', '//giphy.com/embed/bZQvimlS7kuGc');
+		document.getElementById('dlbi-sparkle-banner').className += ' is_a_crap_browser'
+	}
 </script>
 </body>
 
