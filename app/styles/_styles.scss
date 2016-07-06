@@ -7,6 +7,11 @@
   font-style: normal;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+}
+
 .dlbi-sparkle-banner {
 
     #crap_browser_message {
@@ -121,7 +126,7 @@
                 }
                 &.waaay-container {
                     left: 200%;
-                    font-size: 45px;
+                    // font-size: 45px;
                     color: #fff;
                 }
                 .fancy_text {

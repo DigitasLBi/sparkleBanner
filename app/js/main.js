@@ -473,8 +473,7 @@ NIBS.main = (function() {
             }
         });
 
-        //NIBS.logMsg.add();
-
+        NIBS.logMsg.add();
         _setLessMode();
         _autoPlayOn();
         //_setMediumMode();

@@ -20,9 +20,7 @@ NIBS.logMsg = (function() {
                 'You’re obviously the kind of curious super-duper-magical-rainbow-developer with lots of sparkle we’re looking for.',
                 'Or you’re just bored with whatever it is you’re supposed to be doing.',
                 'Either way, it’s best that you become a unicorn. –:)',
-                'https://careers-digitaslbi.icims.com/jobs',
-                'The source code for the banner can be found here:',
-                'https://github.com/DigitasLBi/sparkleBanner/',
+                'https://careers-digitaslbi.icims.com/jobs',                
                 '//See you!'
             ];
 
