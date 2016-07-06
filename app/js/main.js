@@ -22,6 +22,14 @@ NIBS.main = (function() {
         _textWrapperX = 0,
         _sliderK = 1 / 7,
         _bursTimer,
+        ie = function() {
+            var v = parseFloat(navigator.appVersion.split("MSIE")[1]);
+            if (!v) {
+                return false;
+            } else {
+                return v;
+            }
+        },
         $1 = document.querySelector.bind(document),
         $2 = document.querySelectorAll.bind(document);
 
@@ -81,25 +89,25 @@ NIBS.main = (function() {
             wait = 1.2,
             gap = 0.1,
             tl = new tw.Q({
-            onComplete: function() {
-                this.restart();
-            }
-        });
+                onComplete: function() {
+                    this.restart();
+                }
+            });
 
-        tl.add({
-            t: '.' + what + '-container .fancy_text.msg0',
-            what: 'opacity',
-            to: 1,
-            dur: dur
-        });
-
-        tl.add({
-            t: '.' + what + '-container .fancy_text.msg0',
-            what: 'opacity',
-            to: 0,
-            dur: dur,
-            delay: wait
-        });
+        // tl.add({
+        //     t: '.' + what + '-container .fancy_text.msg0',
+        //     what: 'opacity',
+        //     to: 1,
+        //     dur: dur
+        // });
+        //
+        // tl.add({
+        //     t: '.' + what + '-container .fancy_text.msg0',
+        //     what: 'opacity',
+        //     to: 0,
+        //     dur: dur,
+        //     delay: wait
+        // });
 
         tl.add({
             t: '.' + what + '-container .fancy_text.msg1',
@@ -162,7 +170,7 @@ NIBS.main = (function() {
             what: 'opacity',
             to: 0,
             dur: dur,
-            delay: wait * 5
+            delay: wait * 3
         });
 
         tl.play();
@@ -226,12 +234,12 @@ NIBS.main = (function() {
             _waayLabelAnim(function() {
                 _burst({
                     numbOfSparks: 1,
-                    xOffset: -10,
-                    yOffset: -5,
+                    xOffset: -17,
+                    yOffset: -10,
                     dur: 180,
-                    ParticleDiff: 0.01,
-                    particleSize: 2,
-                    lifeTime: 50
+                    ParticleDiff: 0.5,
+                    particleSize: 3,
+                    lifeTime: 43
                 });
             });
 
@@ -334,6 +342,7 @@ NIBS.main = (function() {
     function _autoPlayOn() {
 
         _autoPlaying = true;
+
         if (_autoPlayingInterval) {
             clearInterval(_autoPlayingInterval);
         }
@@ -343,19 +352,22 @@ NIBS.main = (function() {
                 _setMediumMode();
             } else if (NIBS.main.mode === 'medium') {
                 _setWaaayMode();
-            } else if (NIBS.main.mode === 'waaay')  {
+            } else if (NIBS.main.mode === 'waaay') {
                 _setLessMode();
             }
 
-        }, 5000);
+        }, 4300);
     }
 
     function _autoPlayOff() {
 
         _autoPlaying = false;
+        $('.fancy_text.msg0').hide();
         clearInterval(_autoPlayingInterval);
-        if (_autoPlayingTimeLock) clearTimeout(_autoPlayingTimeLock);
-        _autoPlayingTimeLock = setTimeout(_autoPlayOn, 3 * 60000);
+
+        setTimeout(function() {
+            NIBS.main.idle = true;
+        }, 3 * 60000);
 
     }
 
@@ -401,7 +413,20 @@ NIBS.main = (function() {
         }
     }
 
+    function _showIEMsg() {
+        $('.dlbi-sparkle-banner').addClass('is_a_crap_browser');
+    }
+
     function _run() {
+
+        var is_a_crap_browser = ie() && ie() < 10;
+        //is_a_crap_browser = true;
+        if (is_a_crap_browser) {
+        	_showIEMsg();
+            return;
+        } else {
+            $('.IEHidden').removeClass('IEHidden');
+        }
 
         window.requestAnimFrame = (function() {
             return window.requestAnimationFrame ||
@@ -465,6 +490,7 @@ NIBS.main = (function() {
     return {
         run: _run,
         mode: 'less',
+        idle: false,
         settings: {
             posx: 400,
             posy: $('.dlbi-sparkle-banner').height() - 70,

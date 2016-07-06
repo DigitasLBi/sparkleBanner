@@ -9,6 +9,35 @@
 
 .dlbi-sparkle-banner {
 
+    .crap_browser_message {
+        display: none;
+    }
+
+    &.is_a_crap_browser {
+
+        .crap_browser_message {
+            display: block;
+            padding: 20px;
+            p {
+                width: 800px;
+                font-family: sans-serif;
+
+            }
+            iframe {
+                position: absolute;
+                right: 20px;
+                top: 34px;
+            }
+        }
+        .HA {
+            bottom: 0 !important;
+        }
+    }
+
+    .IEHidden {
+        display: none;
+    }
+
     background-color: #0d0d58;
     box-sizing: border-box;
     font-family: 'FuturaBT-Heavy', sans-serif;
@@ -44,6 +73,7 @@
         color: #000;
         overflow: hidden;
         box-shadow: 5px 0 35px rgba(0, 0, 0, 0.2);
+
         .HA {
             position: absolute;
             top: 0;

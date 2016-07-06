@@ -8,7 +8,8 @@ NIBS.background = (function() {
 
     var _bgSpin,
         _alpha = 0,
-        _waaayNumbSparks = 0,
+        _sinVal = 0,
+        _waaayNumbSparks = 20,
         _TO_RADIANS = Math.PI / 180,
         _currAngle = 0;
 
@@ -47,12 +48,14 @@ NIBS.background = (function() {
 
         if (_bgSpin.isLoaded) {
             drawRotatedImage(_bgSpin, 550, 300, _currAngle);
-            _currAngle -= 1;
+            _currAngle -= (2.2 + Math.sin(_sinVal));
+            _sinVal  += 0.05;
         }
 
     }
 
     function _draw() {
+
         if (NIBS.main.mode === 'waaay') {
             if (_alpha >= 1) {
                 _alpha = 1;
@@ -61,13 +64,18 @@ NIBS.background = (function() {
             }
             _drawBgSpin();
 
-            if (_waaayNumbSparks < 100) {
+            var numbSpark = 70;
+            if (NIBS.main.idle) {
+                numbSpark = 20;
+            }
+
+            if (_waaayNumbSparks < numbSpark) {
                 _waaayNumbSparks += 0.1;
                 NIBS.main.settings.numbOfSparks = Math.round(_waaayNumbSparks);
             }
 
         } else {
-            _waaayNumbSparks = 0;
+            _waaayNumbSparks = 20;
             if (_alpha <= 0) {
                 _alpha = 0;
             } else {
