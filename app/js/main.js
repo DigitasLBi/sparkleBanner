@@ -225,7 +225,7 @@ NIBS.main = (function() {
             _animInner(1);
             _waayLabelAnim(function() {
                 _burst({
-                    numbOfSparks: 150,
+                    numbOfSparks: 1,
                     xOffset: -10,
                     yOffset: -5,
                     dur: 180,
@@ -347,7 +347,7 @@ NIBS.main = (function() {
                 _setLessMode();
             }
 
-        }, 3000);
+        }, 5000);
     }
 
     function _autoPlayOff() {

@@ -1,44 +1,36 @@
+@font-face {
+  font-family: 'FuturaBT-Heavy';
+  src: url('../fonts/FuturaBT-Heavy.woff') format('woff'),
+       url('../fonts/FuturaBT-Heavy.ttf') format('truetype'),
+       url('../fonts/FuturaBT-Heavy.svg#FuturaBT-Heavy') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .dlbi-sparkle-banner {
-    .do-puls {
-        animation: do-puls 0.7s infinite linear;
-        display: inline-block;
-    }
-    //.medium-container img.do-puls 
-    .less-container img.do-puls {
-        animation: none;
-    }
-    @keyframes do-puls {
-        0% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.2);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
-    background-color: #eee;
+
+    background-color: #0d0d58;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'FuturaBT-Heavy', sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+
     width: 1100px;
     height: 210px;
     position: relative;
     overflow: hidden;
+
     &size600x400 {
         width: 600px;
         height: 400px;
     }
+
     .logo {
         width: 9%;
         vertical-align: middle;
     }
-    #logo_digitaslbi {
-        position: absolute;
-        left: 10px;
-        width: 90px;
-        top: 10px;
-    }
+
     .data {
         display: none;
     }
@@ -53,7 +45,6 @@
         overflow: hidden;
         box-shadow: 5px 0 35px rgba(0, 0, 0, 0.2);
         .HA {
-            // background-color: rgba(255, 255, 0, 0.3);
             position: absolute;
             top: 0;
             left: 0;
@@ -81,6 +72,10 @@
                 left: 0;
                 &.less-container {
                     font-family: serif;
+                    color: blue;
+                    .fancy_text {
+                        text-decoration: underline;
+                    }
                 }
                 &.medium-container {
                     left: 100%;
@@ -88,7 +83,6 @@
                 &.waaay-container {
                     left: 200%;
                     font-size: 45px;
-                    font-family: 'Luckiest Guy', cursive;
                     color: #fff;
                 }
                 .fancy_text {
@@ -96,18 +90,24 @@
                     top: 0;
                     left: 0;
                     width: 100%;
-                    .textMate {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                    }
                 }
             }
         }
         .newText {
             margin-top: 37px;
         }
+
+        .the-sparkle-rainbow {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            height: 5px;
+            background-color: $red;
+            background-image: linear-gradient( to right, $red, $orange, $yellow, $green, $blue, $purple );
+        }
+
         .the-sparkle-control-wrapper {
             position: absolute;
             width: 100%;
@@ -147,7 +147,6 @@
                     a:visited {
                         color: #fff;
                         text-decoration: none;
-                        font-family: 'Luckiest Guy', cursive;
                     }
                     a:active,
                     a:hover {
@@ -157,16 +156,15 @@
                 }
             }
         }
+
         .slider-wrapper {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            // overflow: hidden;
             box-sizing: border-box;
-            height: 20px;
-            background-color: $red;
-            background-image: linear-gradient( to right, $red, $orange, $yellow, $green, $blue, $purple );
+            height: 45px;
+
             .slider-handle {
                 position: absolute;
                 left: 0;
@@ -178,7 +176,7 @@
                 background-color: transparent;
                 .marker-mask {
                     position: absolute;
-                    top: -10px;
+                    bottom: 5px;
                     width: 0;
                     height: 0;
                     border-left: 6px solid transparent;
