@@ -14,6 +14,32 @@ body {
 
 .dlbi-sparkle-banner {
 
+    background-color: #0d0d58;
+    box-sizing: border-box;
+    font-family: 'FuturaBT-Heavy', sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+
+    width: 1100px;
+    height: 210px;
+    position: relative;
+    overflow: hidden;
+
+    &.size600x400 {
+        width: 600px;
+        height: 400px;
+        .dlbi-sparkle-banner-inner {
+            .text-wrapper {
+                // font-size: 55px;
+                // margin-top: 16px;
+                .container {
+                    top: 100px;
+                }
+            }
+        }
+    }
+
     #crap_browser_message {
         display: none;
     }
@@ -52,23 +78,6 @@ body {
         display: none;
     }
 
-    background-color: #0d0d58;
-    box-sizing: border-box;
-    font-family: 'FuturaBT-Heavy', sans-serif;
-
-    -webkit-font-smoothing: antialiased;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
-
-    width: 1100px;
-    height: 210px;
-    position: relative;
-    overflow: hidden;
-
-    &size600x400 {
-        width: 600px;
-        height: 400px;
-    }
-
     .logo {
         width: 9%;
         vertical-align: middle;
@@ -102,7 +111,6 @@ body {
             left: 0;
             pointer-events: none;
         }
-        .newText,
         .text-wrapper {
             text-align: center;
             font-size: 55px;
@@ -136,9 +144,6 @@ body {
                     width: 100%;
                 }
             }
-        }
-        .newText {
-            margin-top: 37px;
         }
 
         .the-sparkle-rainbow {

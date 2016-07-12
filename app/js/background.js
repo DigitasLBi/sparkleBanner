@@ -49,7 +49,15 @@ NIBS.background = (function() {
         }
 
         if (_bgSpin.isLoaded) {
-            drawRotatedImage(_bgSpin, 550, 300, _currAngle);
+
+            var bgY = 300;
+            var bgX = 550;
+            if (NIBS.main.size === 'size600x400') {
+                bgY = 430;
+                bgX = 300;
+            }
+
+            drawRotatedImage(_bgSpin, bgX, bgY, _currAngle);
             _currAngle -= (2.2 + Math.sin(_sinVal));
             _sinVal  += 0.05;
         }

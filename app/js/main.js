@@ -207,14 +207,21 @@ NIBS.main = (function() {
                     dur: 0.2,
                     onComplete: function() {
                         _$labelBtn.className = 'labels medium';
-                        _burst({
+
+                        var bData = {
                             numbOfSparks: 70,
                             xOffset: 4,
                             yOffset: -5,
                             dur: 5,
                             particleSize: 1.0,
                             lifeTime: 40
-                        });
+                        };
+
+                        if (NIBS.main.size === 'size600x400') {
+                            bData.yOffset = -15;
+                        }
+
+                        _burst(bData);
                         tw.opacity(_$labelBtn, {
                             to: 1,
                             dur: 0.4
@@ -232,7 +239,8 @@ NIBS.main = (function() {
             $1('.the-sparkle-control .slider-handle').className = 'slider-handle waaay';
             _animInner(1);
             _waayLabelAnim(function() {
-                _burst({
+
+                var bData = {
                     numbOfSparks: 1,
                     xOffset: -17,
                     yOffset: -10,
@@ -240,7 +248,14 @@ NIBS.main = (function() {
                     ParticleDiff: 0.5,
                     particleSize: 3,
                     lifeTime: 43
-                });
+                };
+
+                if (NIBS.main.size === 'size600x400') {
+                    bData.yOffset = -15;
+                    bData.xOffset = -10;
+                }
+
+                _burst(bData);
             });
 
         });
@@ -429,6 +444,10 @@ NIBS.main = (function() {
             $('.IEHidden').removeClass('IEHidden');
         }
 
+        if ($('.dlbi-sparkle-banner').hasClass('size600x400')) {
+            NIBS.main.size = 'size600x400';
+        }
+
         window.requestAnimFrame = (function() {
             return window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
@@ -489,6 +508,7 @@ NIBS.main = (function() {
     // Public methods & properties ***
     return {
         run: _run,
+        size: '',
         mode: 'less',
         idle: false,
         showIEMsg: _showIEMsg,
